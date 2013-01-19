@@ -1,15 +1,15 @@
-// 
+//
 //  Authors:
 //   *  Tyler Kennedy <tk@tkte.ch>
 //   *  Matvei Stefarov <fragmer@gmail.com>
-// 
+//
 //  Copyright (c) 2010, Tyler Kennedy & Matvei Stefarov
-// 
+//
 //  All rights reserved.
-// 
+//
 //  Redistribution and use in source and binary forms, with or without modification,
 // are permitted provided that the following conditions are met:
-// 
+//
 //     * Redistributions of source code must retain the above copyright notice, this
 //       list of conditions and the following disclaimer.
 //     * Redistributions in binary form must reproduce the above copyright notice,
@@ -18,7 +18,7 @@
 //     * Neither the name of MCC nor the names of its contributors may be
 //       used to endorse or promote products derived from this software without
 //       specific prior written permission.
-// 
+//
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 //  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 //  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -30,7 +30,7 @@
 //  LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
 //  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 //  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-// 
+//
 
 using System;
 using System.IO;
@@ -40,7 +40,7 @@ using System.Net;
 
 
 namespace MCForge {
-    public static class ConvertDat {
+	public static class ConvertDat {
 		public static Level Load(Stream lvlStream, string fileName)
 		{
 			byte[] temp = new byte[8];
@@ -155,11 +155,11 @@ namespace MCForge {
 			}
 		}
 
-        static bool MemCmp( byte[] data, int offset, string value ) {
-            for( int i = 0; i < value.Length; i++ ) {
-                if( offset + i >= data.Length || data[offset + i] != value[i] ) return false;
-            }
-            return true;
-        }
-    }
+		static bool MemCmp( byte[] data, int offset, string value ) {
+			for( int i = 0; i < value.Length; i++ ) {
+				if( offset + i >= data.Length || data[offset + i] != value[i] ) return false;
+			}
+			return true;
+		}
+	}
 }

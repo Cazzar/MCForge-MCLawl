@@ -1,23 +1,23 @@
 /*
- * Thresher IRC client library
- * Copyright (C) 2002 Aaron Hunter <thresher@sharkbite.org>
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- * 
- * See the gpl.txt file located in the top-level-directory of
- * the archive of this library for complete text of license.
+	* Thresher IRC client library
+	* Copyright (C) 2002 Aaron Hunter <thresher@sharkbite.org>
+	*
+	* This program is free software; you can redistribute it and/or
+	* modify it under the terms of the GNU General Public License
+	* as published by the Free Software Foundation; either version 2
+	* of the License, or (at your option) any later version.
+	*
+	* This program is distributed in the hope that it will be useful,
+	* but WITHOUT ANY WARRANTY; without even the implied warranty of
+	* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+	* GNU General Public License for more details.
+	*
+	* You should have received a copy of the GNU General Public License
+	* along with this program; if not, write to the Free Software
+	* Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+	*
+	* See the gpl.txt file located in the top-level-directory of
+	* the archive of this library for complete text of license.
 */
 
 using System;
@@ -31,11 +31,11 @@ using System.Net.Sockets;
 namespace Sharkbite.Irc
 {
 	/// <summary>
-	/// Establish a DCC Chat connection with a remote user. 
+	/// Establish a DCC Chat connection with a remote user.
 	/// </summary>
 	public sealed class DccChatSession
-	{		
-		
+	{
+
 		/// <summary>
 		/// The remote user did not respond to a Chat request
 		/// within the timeout period.
@@ -64,7 +64,7 @@ namespace Sharkbite.Irc
 		private int listenPort;
 		private bool listening;
 		private bool receiving;
-	
+
 		internal DccChatSession( DccUserInfo dccUserInfo  )
 		{
 			this.dccUserInfo = dccUserInfo;
@@ -77,7 +77,7 @@ namespace Sharkbite.Irc
 		/// is currently connected to another user.
 		/// </summary>
 		/// <value>True if the client is connected.</value>
-		public bool Connected 
+		public bool Connected
 		{
 			get
 			{
@@ -88,15 +88,15 @@ namespace Sharkbite.Irc
 		/// Iinformation about the remote user.
 		/// </summary>
 		/// <value>A read-only instance of DccUserInfo.</value>
-		public DccUserInfo ClientInfo 
+		public DccUserInfo ClientInfo
 		{
-			get 
+			get
 			{
 				return dccUserInfo;
 			}
 		}
 
-		private void CloseClientConnection() 
+		private void CloseClientConnection()
 		{
 			client.GetStream().Close();
 			client.Close();
@@ -104,10 +104,10 @@ namespace Sharkbite.Irc
 		/// <summary>
 		/// Send the session closed event
 		/// </summary>
-		private void SendClosedEvent() 
+		private void SendClosedEvent()
 		{
 			Debug.WriteLineIf( DccUtil.DccTrace.TraceInfo, "[" + Thread.CurrentThread.Name +"] DccChatSession::SendClosedEvent()");
-			if( OnChatSessionClosed != null ) 
+			if( OnChatSessionClosed != null )
 			{
 				OnChatSessionClosed( this );
 			}
@@ -115,7 +115,7 @@ namespace Sharkbite.Irc
 		/// <summary>
 		/// Create the correctly formatted DCC CHAT message and send it.
 		/// </summary>
-		private void SendChatRequest( string listenIPAddress, int listenPort ) 
+		private void SendChatRequest( string listenIPAddress, int listenPort )
 		{
 			//512 is the max IRC message size
 			StringBuilder builder = new StringBuilder("PRIVMSG ", 512 );
@@ -129,27 +129,27 @@ namespace Sharkbite.Irc
 		}
 		/// <summary>
 		/// Called when timeout thread is done.
-		/// If the session has not yet not connected 
-		/// then stop listening and send a OnChatRequestTimeout 
+		/// If the session has not yet not connected
+		/// then stop listening and send a OnChatRequestTimeout
 		/// event.
 		/// </summary>
 		/// <param name="state">An instance of DccChatSession</param>
-		private void TimerExpired( object state ) 
+		private void TimerExpired( object state )
 		{
-			if( listening ) 
+			if( listening )
 			{
 				Debug.WriteLineIf( DccUtil.DccTrace.TraceInfo, "[" + Thread.CurrentThread.Name +"] DccChatSession::TimerExpired() Chat session " + this.ToString() + " timed out.");
-				if( OnChatRequestTimeout != null ) 
+				if( OnChatRequestTimeout != null )
 				{
 					OnChatRequestTimeout( this );
 				}
 				Close();
 			}
 		}
-		private void Listen() 
+		private void Listen()
 		{
 			Debug.WriteLineIf( DccUtil.DccTrace.TraceInfo, "[" + Thread.CurrentThread.Name +"] DccChatSession::Listen()");
-			try 
+			try
 			{
 				//Wait for remote client to connect
 				IPEndPoint localEndPoint = new IPEndPoint( DccUtil.LocalHost(), listenPort );
@@ -161,65 +161,65 @@ namespace Sharkbite.Irc
 				server.Stop();
 				listening = false;
 				Debug.WriteLineIf( DccUtil.DccTrace.TraceInfo, "[" + Thread.CurrentThread.Name +"] DccChatSession::Listen() Remote user connected.");
-				if( OnChatSessionOpened != null ) 
+				if( OnChatSessionOpened != null )
 				{
 					OnChatSessionOpened( this );
 				}
 				//Start listening for messages
 				ReceiveMessages();
 			}
-			catch( Exception e ) 
+			catch( Exception e )
 			{
 				Debug.WriteLineIf( DccUtil.DccTrace.TraceInfo, "[" + Thread.CurrentThread.Name +"] DccChatSession::Listen() Connection broken");
 			}
-			finally 
+			finally
 			{
 				SendClosedEvent();
 			}
 		}
 
-		private void Connect() 
+		private void Connect()
 		{
 			Debug.WriteLineIf( DccUtil.DccTrace.TraceInfo, "[" + Thread.CurrentThread.Name +"] DccChatSession::Connect()");
-			try 
+			try
 			{
 				client = new TcpClient();
 				client.Connect( dccUserInfo.RemoteEndPoint );
-				if( OnChatSessionOpened != null ) 
+				if( OnChatSessionOpened != null )
 				{
 					OnChatSessionOpened( this );
 				}
 				ReceiveMessages();
 			}
-			catch ( Exception se) 
+			catch ( Exception se)
 			{
-				Debug.WriteLineIf( Rfc2812Util.IrcTrace.TraceWarning, "[" + Thread.CurrentThread.Name +"] DccChatSession::Connect() exception=" + se );		
-				if( se.Message.IndexOf("refused" ) > 0 ) 
+				Debug.WriteLineIf( Rfc2812Util.IrcTrace.TraceWarning, "[" + Thread.CurrentThread.Name +"] DccChatSession::Connect() exception=" + se );
+				if( se.Message.IndexOf("refused" ) > 0 )
 				{
 					dccUserInfo.Connection.Listener.Error( ReplyCode.DccConnectionRefused, "Connection refused by remote user." );
 				}
-				else 
+				else
 				{
 					dccUserInfo.Connection.Listener.Error( ReplyCode.ConnectionFailed, "Unknown socket error:" + se.Message );
 				}
 				CloseClientConnection();
 			}
-			finally 
+			finally
 			{
 				SendClosedEvent();
 			}
 		}
-		private void ReceiveMessages() 
+		private void ReceiveMessages()
 		{
 			Debug.WriteLineIf( DccUtil.DccTrace.TraceInfo, "[" + Thread.CurrentThread.Name +"] DccChatSession::ReceiveMessages()");
-			try 
+			try
 			{
 				receiving = true;
 				string message = "";
 				StreamReader reader = new StreamReader( client.GetStream(), dccUserInfo.Connection.TextEncoding );
-				while( ( message = reader.ReadLine() ) != null ) 
+				while( ( message = reader.ReadLine() ) != null )
 				{
-					if( OnChatMessageReceived != null ) 
+					if( OnChatMessageReceived != null )
 					{
 						Debug.Indent();
 						Debug.WriteLineIf( DccUtil.DccTrace.TraceVerbose, "[" + Thread.CurrentThread.Name +"] DccChatSession::ReceiveMessages() Session: " + ToString() + " Received: " + message );
@@ -231,17 +231,17 @@ namespace Sharkbite.Irc
 				//Read loop broken. Remote user must have closed the socket
 				dccUserInfo.Connection.Listener.Error( ReplyCode.ConnectionFailed, "Chat connection closed by remote user." );
 			}
-			catch( ThreadAbortException tae ) 
+			catch( ThreadAbortException tae )
 			{
 				Debug.WriteLineIf( DccUtil.DccTrace.TraceWarning, "[" + Thread.CurrentThread.Name +"] DccChatSession::ReceiveMessages() Thread manually stopped. ");
 				//Prevent the exception from being re-thrown in the Listen() method.
 				Thread.ResetAbort();
 			}
-			catch( Exception e ) 
+			catch( Exception e )
 			{
 				Debug.WriteLineIf( DccUtil.DccTrace.TraceWarning, "[" + Thread.CurrentThread.Name +"] DccChatSession::ReceiveMessages() exception= "+ e);
 			}
-			finally 
+			finally
 			{
 				CloseClientConnection();
 			}
@@ -251,13 +251,13 @@ namespace Sharkbite.Irc
 		/// Send a line of text to the remote user. There is no fixed
 		/// limit to message size but they should not be too long.
 		/// </summary>
-		/// <param name="text">The text. It need not have a 
+		/// <param name="text">The text. It need not have a
 		/// newline at the end since one will automatically appended..</param>
-		public void SendMessage( string text ) 
+		public void SendMessage( string text )
 		{
-			if( Connected ) 
+			if( Connected )
 			{
-				try 
+				try
 				{
 					//Some IRC client are looking for a newline (ie mIRC) so add one
 					//before sending. Also strip off any existing new lines so
@@ -266,7 +266,7 @@ namespace Sharkbite.Irc
 					client.GetStream().Write( messageBytes, 0, messageBytes.Length );
 					Debug.WriteLineIf( DccUtil.DccTrace.TraceVerbose, "[" + Thread.CurrentThread.Name +"] DccChatSession::SendMessage() Sent : " + text + " Size: " + messageBytes.Length );
 				}
-				catch( Exception e ) 
+				catch( Exception e )
 				{
 					Debug.WriteLineIf( DccUtil.DccTrace.TraceWarning, "[" + Thread.CurrentThread.Name +"] DccChatSession::SendMessage() " + e );
 				}
@@ -275,17 +275,17 @@ namespace Sharkbite.Irc
 		/// <summary>
 		/// Close the chat session.
 		/// </summary>
-		public void Close() 
+		public void Close()
 		{
 			//Locked because it may be called by the Timer or client thread
-			lock( this ) 
+			lock( this )
 			{
 				Debug.WriteLineIf( DccUtil.DccTrace.TraceInfo, "[" + Thread.CurrentThread.Name +"] DccChatSession::Close()");
-				if( listening ) 
+				if( listening )
 				{
 					server.Stop();
 				}
-				else if( receiving ) 
+				else if( receiving )
 				{
 					thread.Abort();
 				}
@@ -295,7 +295,7 @@ namespace Sharkbite.Irc
 		/// Summary information about this session.
 		/// </summary>
 		/// <returns>Simple information about this session in human readable format.</returns>
-		public override string ToString() 
+		public override string ToString()
 		{
 			return "DccChatSession::" + dccUserInfo.ToString();
 		}
@@ -306,20 +306,20 @@ namespace Sharkbite.Irc
 		/// start a chat session with that user.
 		/// </summary>
 		/// <remarks>
-		/// This method should be called from within a try/catch block 
+		/// This method should be called from within a try/catch block
 		/// because there are many things that could prevent this
 		/// connection attempt from succeeding.
 		/// </remarks>
 		/// <param name="dccUserInfo">A collection of information about the remote user.</param>
 		/// <returns>The DccChatSession instance for this session.</returns>
-		public static DccChatSession Accept( DccUserInfo dccUserInfo ) 
+		public static DccChatSession Accept( DccUserInfo dccUserInfo )
 		{
 			Debug.WriteLineIf( DccUtil.DccTrace.TraceInfo, "[" + Thread.CurrentThread.Name +"] DccChatSession::Accept()");
 			DccChatSession session = new DccChatSession( dccUserInfo );
 			//Start session Thread
 			session.thread = new Thread(new ThreadStart( session.Connect ) );
 			session.thread.Name = session.ToString();
-			session.thread.Start();	
+			session.thread.Start();
 			return session;
 		}
 		/// <summary>
@@ -327,19 +327,19 @@ namespace Sharkbite.Irc
 		/// timeout period of 30 seconds.
 		/// </summary>
 		/// <remarks>
-		/// <para>If the user does not respond within the timeout period the DccChatSession 
+		/// <para>If the user does not respond within the timeout period the DccChatSession
 		/// will stop listening for a connection. The sesssion instance created then becomes
 		/// invalid. This methods must be called again and a new instance created in order to
 		/// initiate a try again.
 		/// </para>
 		/// <para>
-		/// This method should be called from within a try/catch block 
+		/// This method should be called from within a try/catch block
 		/// in case there are socket errors.
 		/// </para>
 		/// </remarks>
 		/// <param name="dccUserInfo">A collection of information about the remote user.</param>
-		/// <param name="listenIPAddress">The IP address of the local machine in dot 
-		/// quad format (e.g. 192.168.0.25). This is the address that will be sent to the 
+		/// <param name="listenIPAddress">The IP address of the local machine in dot
+		/// quad format (e.g. 192.168.0.25). This is the address that will be sent to the
 		/// remote user. The IP address of the NAT machine must be used if the
 		/// client is behind a a NAT/Firewall system. </param>
 		/// <param name="listenPort">The TCP/IP port to listen on</param>
@@ -352,13 +352,13 @@ namespace Sharkbite.Irc
 		/// using timeout period specified.
 		/// </summary>
 		/// <remarks>
-		/// <para>If the user does not respond within the timeout period the DccChatSession 
+		/// <para>If the user does not respond within the timeout period the DccChatSession
 		/// will stop listening for a connection. The sesssion instance created then becomes
 		/// invalid. This methods must be called again and a new instance created in order to
 		/// initiate a try again.
 		/// </para>
 		/// <para>
-		/// This method should be called from within a try/catch block 
+		/// This method should be called from within a try/catch block
 		/// in case there are socket errors.
 		/// </para>
 		/// </remarks>
@@ -373,16 +373,16 @@ namespace Sharkbite.Irc
 		{
 			Debug.WriteLineIf( DccUtil.DccTrace.TraceInfo, "[" + Thread.CurrentThread.Name +"] DccChatSession::Request()");
 			//Create session object
-			DccChatSession session = new DccChatSession( dccUserInfo );		
+			DccChatSession session = new DccChatSession( dccUserInfo );
 			session.listenPort = listenPort;
 			//Start session Thread
 			session.thread = new Thread(new ThreadStart( session.Listen ) );
 			session.thread.Name = session.ToString();
-			session.thread.Start();	
+			session.thread.Start();
 			//Send Chat request to remote user
 			session.SendChatRequest( listenIPAddress, listenPort );
 			//Start timeout thread if timeout > 0
-			if( timeout > 0 ) 
+			if( timeout > 0 )
 			{
 				Timer timer = new Timer(
 					new TimerCallback( session.TimerExpired ),

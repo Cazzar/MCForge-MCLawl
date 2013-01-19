@@ -50,10 +50,10 @@ case "$1" in
 				if [ -f "${gamepid}" ] && ps h `cat "${gamepid}"` >/dev/null; then
 					echo -e "....Started!"
 					exit 0
-		      		else
-					echo -e "....Failed to start. Check logfile or run in normal mode!"
-					exit 1
-			     	fi
+				else
+				echo -e "....Failed to start. Check logfile or run in normal mode!"
+				exit 1
+			fi
 			else
 				echo -e "Failed"
 			fi
@@ -87,12 +87,12 @@ case "$1" in
 		fi
 ;;
 	check)
-	        echo -n "Checking $gamename server status: "
+	echo -n "Checking $gamename server status: "
 		if ! ps -ef |grep "${monobin} ${gameopt} ${mcfdir}/MCForge.exe"|awk -F" " -v game=${monobin} 'BEGIN {status=1} ; $8 == game {status=0} ; END {exit status}' ; then
-        	        echo -e "offline"
-	        else
-	                echo -e "online"
-	        fi
+		echo -e "offline"
+	else
+	echo -e "online"
+	fi
 ;;
 	restart)
 		echo "Usage: $0 {stop|restart|status|check}"
@@ -102,18 +102,18 @@ case "$1" in
 	normal)
 		echo -n "Starting $gamename server with '${gameopt}' "
 		if ps -ef |grep "${monobin} ${gameopt} ${mcfdir}/MCForge.exe"|awk -F" " -v game=${monobin} 'BEGIN {status=1} ; $8 == game {status=0} ; END {exit status}' ; then
-   			echo -e "already active"
-			exit 3
-		else
-			echo -e "--Hit CTRL+C multiple times to kill the script! Use '/save all' first, if you want to save"
-			echo -e
-			${monobin} ${gameopt} ${mcfdir}/MCForge.exe
-			if $autorestart ; then
-				$0
-			else
-				exit 0
-			fi
-		fi
+	echo -e "already active"
+	exit 3
+else
+	echo -e "--Hit CTRL+C multiple times to kill the script! Use '/save all' first, if you want to save"
+	echo -e
+	${monobin} ${gameopt} ${mcfdir}/MCForge.exe
+	if $autorestart ; then
+		$0
+	else
+		exit 0
+	fi
+fi
 ;;
 	*)
 		if [ -f "${mcfdir}/MCForge_.update" ]; then

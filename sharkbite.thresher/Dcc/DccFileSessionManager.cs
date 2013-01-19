@@ -1,23 +1,23 @@
 /*
- * Thresher IRC client library
- * Copyright (C) 2002 Aaron Hunter <thresher@sharkbite.org>
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- * 
- * See the gpl.txt file located in the top-level-directory of
- * the archive of this library for complete text of license.
+	* Thresher IRC client library
+	* Copyright (C) 2002 Aaron Hunter <thresher@sharkbite.org>
+	*
+	* This program is free software; you can redistribute it and/or
+	* modify it under the terms of the GNU General Public License
+	* as published by the Free Software Foundation; either version 2
+	* of the License, or (at your option) any later version.
+	*
+	* This program is distributed in the hope that it will be useful,
+	* but WITHOUT ANY WARRANTY; without even the implied warranty of
+	* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+	* GNU General Public License for more details.
+	*
+	* You should have received a copy of the GNU General Public License
+	* along with this program; if not, write to the Free Software
+	* Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+	*
+	* See the gpl.txt file located in the top-level-directory of
+	* the archive of this library for complete text of license.
 */
 
 using System;
@@ -29,7 +29,7 @@ using System.Threading;
 namespace Sharkbite.Irc
 {
 	/// <summary>
-	/// This class checks each file session to see if it has not 
+	/// This class checks each file session to see if it has not
 	/// had any activity within the timeout period so that
 	/// inactive sessions can be closed.
 	/// </summary>
@@ -58,8 +58,8 @@ namespace Sharkbite.Irc
 			timerStopped = true;
 			sessions = Hashtable.Synchronized( new Hashtable() );
 		}
-	
-		private Boolean TimedOut( DccFileSession session ) 
+
+		private Boolean TimedOut( DccFileSession session )
 		{
 			if( ( DateTime.Now - session.LastActivity ) >= timeout )
 			{
@@ -68,36 +68,36 @@ namespace Sharkbite.Irc
 			return false;
 		}
 
-		internal void AddSession( DccFileSession session ) 
+		internal void AddSession( DccFileSession session )
 		{
 			sessions.Add( session.ID, session );
-			if( timerStopped ) 
+			if( timerStopped )
 			{
 				timerStopped = false;
 				timerThread.Change(TimeoutCheckPeriod, TimeoutCheckPeriod);
 			}
 			Debug.WriteLineIf( DccUtil.DccTrace.TraceInfo, "[" + Thread.CurrentThread.Name +"] DccSessionManager::AddSession() ID=" + session.ID );
 		}
-		internal void RemoveSession( DccFileSession session ) 
+		internal void RemoveSession( DccFileSession session )
 		{
 			sessions.Remove( session.ID );
-			if( sessions.Count == 0 ) 
+			if( sessions.Count == 0 )
 			{
 				timerStopped = true;
 				timerThread.Change( Timeout.Infinite, TimeoutCheckPeriod );
 			}
 			Debug.WriteLineIf( DccUtil.DccTrace.TraceInfo, "[" + Thread.CurrentThread.Name +"] DccSessionManager::RemoveSession() ID=" + session.ID );
 		}
-		internal void CheckSessions( object state ) 
+		internal void CheckSessions( object state )
 		{
 			Debug.WriteLineIf( DccUtil.DccTrace.TraceVerbose, "[" + Thread.CurrentThread.Name +"] DccSessionManager::CheckSessions()");
 			sessionClone = (Hashtable) sessions.Clone();
-			foreach( object session in sessionClone.Values ) 
+			foreach( object session in sessionClone.Values )
 			{
 				DccFileSession fileSession = (DccFileSession) session;
-				lock( fileSession ) 
+				lock( fileSession )
 				{
-					if( TimedOut( fileSession ) ) 
+					if( TimedOut( fileSession ) )
 					{
 						fileSession.TimedOut();
 					}
@@ -108,10 +108,10 @@ namespace Sharkbite.Irc
 		{
 			return sessions.Contains( sessionID );
 		}
-		internal DccFileSession LookupSession( string sessionID ) 
+		internal DccFileSession LookupSession( string sessionID )
 		{
 			//Make sure this session is till active
-			if( !ContainsSession( sessionID ) ) 
+			if( !ContainsSession( sessionID ) )
 			{
 				throw new ArgumentException( sessionID + " is not active.");
 			}
@@ -124,11 +124,11 @@ namespace Sharkbite.Irc
 		/// </summary>
 		public static DccFileSessionManager DefaultInstance
 		{
-			get 
+			get
 			{
-				lock( lockObject ) 
+				lock( lockObject )
 				{
-					if( defaultInstance == null ) 
+					if( defaultInstance == null )
 					{
 						defaultInstance = new DccFileSessionManager();
 						Debug.WriteLineIf( DccUtil.DccTrace.TraceVerbose, "[" + Thread.CurrentThread.Name +"] DccFileSessionManager::init");
@@ -140,18 +140,18 @@ namespace Sharkbite.Irc
 		/// <summary>
 		/// Timeout period in milliseconds
 		/// </summary>
-		public long TimeoutPeriod 
+		public long TimeoutPeriod
 		{
 			get
 			{
-				lock( defaultInstance ) 
+				lock( defaultInstance )
 				{
 					return timeout.Ticks * TimeSpan.TicksPerMillisecond;
 				}
 			}
-			set 
+			set
 			{
-				lock( defaultInstance ) 
+				lock( defaultInstance )
 				{
 					timeout = new TimeSpan( value * TimeSpan.TicksPerMillisecond );
 				}

@@ -1,23 +1,23 @@
 /*
- * Thresher IRC client library
- * Copyright (C) 2002 Aaron Hunter <thresher@sharkbite.org>
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- * 
- * See the gpl.txt file located in the top-level-directory of
- * the archive of this library for complete text of license.
+	* Thresher IRC client library
+	* Copyright (C) 2002 Aaron Hunter <thresher@sharkbite.org>
+	*
+	* This program is free software; you can redistribute it and/or
+	* modify it under the terms of the GNU General Public License
+	* as published by the Free Software Foundation; either version 2
+	* of the License, or (at your option) any later version.
+	*
+	* This program is distributed in the hope that it will be useful,
+	* but WITHOUT ANY WARRANTY; without even the implied warranty of
+	* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+	* GNU General Public License for more details.
+	*
+	* You should have received a copy of the GNU General Public License
+	* along with this program; if not, write to the Free Software
+	* Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+	*
+	* See the gpl.txt file located in the top-level-directory of
+	* the archive of this library for complete text of license.
 */
 
 using System;
@@ -42,7 +42,7 @@ namespace Sharkbite.Irc
 		/// Get the IPAddress object for the local machine.
 		/// </summary>
 		/// <returns>An instance of IPAddress.</returns>
-		public static IPAddress LocalHost() 
+		public static IPAddress LocalHost()
 		{
 			IPHostEntry localhost = Dns.Resolve( Dns.GetHostName() );
 			return localhost.AddressList[0];
@@ -53,7 +53,7 @@ namespace Sharkbite.Irc
 		/// </summary>
 		/// <param name="bytesReceived">The number of bytes received as a long.</param>
 		/// <returns>An unsigned int as a 4 byte array.</returns>
-		public static byte[] DccBytesReceivedFormat( long bytesReceived ) 
+		public static byte[] DccBytesReceivedFormat( long bytesReceived )
 		{
 			byte[] size = new byte[4];
 			byte[] longBytes = BitConverter.GetBytes( NetworkUnsignedLong( bytesReceived ) );
@@ -66,7 +66,7 @@ namespace Sharkbite.Irc
 		/// </summary>
 		/// <param name="received">The 4 byte unsigned integer.</param>
 		/// <returns>A long</returns>
-		public static long DccBytesToLong( byte[] received ) 
+		public static long DccBytesToLong( byte[] received )
 		{
 			return IPAddress.NetworkToHostOrder( BitConverter.ToInt32( received, 0 ) );
 		}
@@ -76,9 +76,9 @@ namespace Sharkbite.Irc
 		/// </summary>
 		/// <param name="ipAddress">A valid IP address</param>
 		/// <returns>The long in string form</returns>
-		public static string IPAddressToLong( IPAddress ipAddress ) 
+		public static string IPAddressToLong( IPAddress ipAddress )
 		{
-			if( ipAddress == null ) 
+			if( ipAddress == null )
 			{
 				throw new ArgumentException("Address cannot be null");
 			}
@@ -90,19 +90,19 @@ namespace Sharkbite.Irc
 		/// </summary>
 		/// <param name="networkOrder">The address long in string form.</param>
 		/// <returns>An IpAddress object</returns>
-		public static IPAddress LongToIPAddress( string networkOrder ) 
+		public static IPAddress LongToIPAddress( string networkOrder )
 		{
 			if( networkOrder == null || networkOrder.Trim() == "" )
 			{
 				throw new ArgumentException("Network order address cannot be null or empty.");
 			}
-			try 
+			try
 			{
 				//Johan's routine
 				byte[] quads = BitConverter.GetBytes( long.Parse( networkOrder, CultureInfo.InvariantCulture ) );
 				return IPAddress.Parse( quads[3] + "." +quads[2] + "." + quads[1] + "." + quads[0] );
 			}
-			catch( FormatException fe ) 
+			catch( FormatException fe )
 			{
 				throw new ArgumentException( networkOrder + " is not a valid network address.");
 			}
@@ -114,7 +114,7 @@ namespace Sharkbite.Irc
 		/// </summary>
 		/// <param name="fileName">The file name.</param>
 		/// <returns>Underscored string.</returns>
-		public static string SpacesToUnderscores( string fileName ) 
+		public static string SpacesToUnderscores( string fileName )
 		{
 			return fileName.Replace(' ','_');
 		}
@@ -124,7 +124,7 @@ namespace Sharkbite.Irc
 		/// </summary>
 		/// <param name="hostOrderLong">A long in host order</param>
 		/// <returns>The long as unsigned int in network order</returns>
-		private static long NetworkUnsignedLong( long hostOrderLong ) 
+		private static long NetworkUnsignedLong( long hostOrderLong )
 		{
 			long networkLong = IPAddress.HostToNetworkOrder( hostOrderLong );
 			//Network order has the octets in reverse order starting with byte 7

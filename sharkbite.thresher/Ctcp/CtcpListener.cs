@@ -1,23 +1,23 @@
 /*
- * Thresher IRC client library
- * Copyright (C) 2002  Aaron Hunter <thresher@sharkbite.org>
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- * 
- * See the gpl.txt file located in the top-level-directory of
- * the archive of this library for complete text of license.
+	* Thresher IRC client library
+	* Copyright (C) 2002  Aaron Hunter <thresher@sharkbite.org>
+	*
+	* This program is free software; you can redistribute it and/or
+	* modify it under the terms of the GNU General Public License
+	* as published by the Free Software Foundation; either version 2
+	* of the License, or (at your option) any later version.
+	*
+	* This program is distributed in the hope that it will be useful,
+	* but WITHOUT ANY WARRANTY; without even the implied warranty of
+	* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	* GNU General Public License for more details.
+	*
+	* You should have received a copy of the GNU General Public License
+	* along with this program; if not, write to the Free Software
+	* Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+	*
+	* See the gpl.txt file located in the top-level-directory of
+	* the archive of this library for complete text of license.
 */
 
 using System;
@@ -28,9 +28,9 @@ using System.Globalization;
 namespace Sharkbite.Irc
 {
 	/// <summary>
-	/// This class is used to send CTCP specific events. Once registered with this object 
-	/// the client can receive notification of all CTCP requests, pings, and replies. Instances 
-	/// of this class are not created directly but are retrieved as a property from a 
+	/// This class is used to send CTCP specific events. Once registered with this object
+	/// the client can receive notification of all CTCP requests, pings, and replies. Instances
+	/// of this class are not created directly but are retrieved as a property from a
 	/// <see cref="Connection"/> object.
 	/// </summary>
 	/// <remarks>All CTCP messages come in Request/Reply pairs. Each event
@@ -38,7 +38,7 @@ namespace Sharkbite.Irc
 	/// CTCP Ping) are very similiar so they are all handled by the same set of events.</remarks>
 	///<example><code>
 	/// //Create a Connection object which will support CTCP (second bool param).
-	/// Connection connection = new Connection( args, true, false );	
+	/// Connection connection = new Connection( args, true, false );
 	/// //Register a delegate on this CtcpListener.
 	/// connection.CtcpListener.OnCtcpRequest += new CtcpRequestEventHandler( MyOnCtcpRequest );
 	/// //If the Connection was created without CTCP support then this property will return null.
@@ -74,7 +74,7 @@ namespace Sharkbite.Irc
 		private const int Command = 1;
 		private const int Text = 2;
 
-		static CtcpListener() 
+		static CtcpListener()
 		{
 			ctcpTypes = "(FINGER|USERINFO|VERSION|SOURCE|CLIENTINFO|ERRMSG|PING|TIME)";
 			ctcpRegex = new Regex(":([^ ]+) [A-Z]+ [^:]+:\u0001" + ctcpTypes + "([^\u0001]*)\u0001", RegexOptions.Compiled | RegexOptions.Singleline );
@@ -89,70 +89,70 @@ namespace Sharkbite.Irc
 			this.connection = connection;
 		}
 
-		private bool IsReply( string[] tokens ) 
+		private bool IsReply( string[] tokens )
 		{
-			if( tokens[ Text ].Length == 0 ) 
+			if( tokens[ Text ].Length == 0 )
 			{
 				return false;
 			}
 			return true;
 		}
 
-		private static string[] TokenizeMessage( string message ) 
+		private static string[] TokenizeMessage( string message )
 		{
-			try 
+			try
 			{
 				Match match = ctcpRegex.Match( message );
 				return new string[] { match.Groups[1].ToString(), match.Groups[2].ToString(),match.Groups[3].ToString().Trim()  };
 			}
-			catch( Exception e ) 
+			catch( Exception e )
 			{
 				return null;
 			}
 		}
 
-		internal void Parse( string line ) 
+		internal void Parse( string line )
 		{
 			string[] ctcpTokens = TokenizeMessage( line );
-			if( ctcpTokens != null ) 
+			if( ctcpTokens != null )
 			{
-				if( ctcpTokens[ Command ].ToUpper( CultureInfo.CurrentCulture ) == CtcpUtil.Ping ) 
+				if( ctcpTokens[ Command ].ToUpper( CultureInfo.CurrentCulture ) == CtcpUtil.Ping )
 				{
-					if( connection.CtcpSender.IsMyRequest( ctcpTokens[ Text] ) ) 
+					if( connection.CtcpSender.IsMyRequest( ctcpTokens[ Text] ) )
 					{
 						connection.CtcpSender.ReplyReceived( ctcpTokens[ Text] );
-						if( OnCtcpPingReply != null ) 
+						if( OnCtcpPingReply != null )
 						{
 							OnCtcpPingReply( Rfc2812Util.UserInfoFromString( ctcpTokens[ Name ] ), ctcpTokens[ Text] ) ;
 						}
 					}
-					else 
+					else
 					{
 						//Ignore PING's with now parameters
-						if( ctcpTokens[ Text] != null && ctcpTokens[ Text].TrimEnd().Length != 0  ) 
+						if( ctcpTokens[ Text] != null && ctcpTokens[ Text].TrimEnd().Length != 0  )
 						{
-							if( OnCtcpPingRequest != null ) 
+							if( OnCtcpPingRequest != null )
 							{
 								OnCtcpPingRequest( Rfc2812Util.UserInfoFromString( ctcpTokens[ Name ] ), ctcpTokens[ Text] ) ;
 							}
 						}
 					}
 				}
-				else 
+				else
 				{
-					if( IsReply( ctcpTokens ) ) 
+					if( IsReply( ctcpTokens ) )
 					{
-						if( OnCtcpReply != null ) 
+						if( OnCtcpReply != null )
 						{
 							OnCtcpReply( ctcpTokens[ Command].ToUpper( CultureInfo.CurrentCulture ) ,  Rfc2812Util.UserInfoFromString( ctcpTokens[ Name ] ), ctcpTokens[ Text] );
 						}
 					}
-					else 
+					else
 					{
-						if( OnCtcpRequest != null ) 
+						if( OnCtcpRequest != null )
 						{
 							OnCtcpRequest( ctcpTokens[ Command].ToUpper( CultureInfo.CurrentCulture ) , Rfc2812Util.UserInfoFromString( ctcpTokens[ Name ] ));
-						}	
+						}
 					}
 				}
 			}
@@ -168,7 +168,7 @@ namespace Sharkbite.Irc
 		/// </summary>
 		/// <param name="message">The raw message from the IRC server</param>
 		/// <returns>True if this is a Ctcp request or reply.</returns>
-		public static bool IsCtcpMessage( string message ) 
+		public static bool IsCtcpMessage( string message )
 		{
 			return ctcpRegex.IsMatch( message );
 		}

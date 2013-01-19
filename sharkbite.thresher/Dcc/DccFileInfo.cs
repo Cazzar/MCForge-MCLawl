@@ -1,23 +1,23 @@
 /*
- * Thresher IRC client library
- * Copyright (C) 2002 Aaron Hunter <thresher@sharkbite.org>
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- * 
- * See the gpl.txt file located in the top-level-directory of
- * the archive of this library for complete text of license.
+	* Thresher IRC client library
+	* Copyright (C) 2002 Aaron Hunter <thresher@sharkbite.org>
+	*
+	* This program is free software; you can redistribute it and/or
+	* modify it under the terms of the GNU General Public License
+	* as published by the Free Software Foundation; either version 2
+	* of the License, or (at your option) any later version.
+	*
+	* This program is distributed in the hope that it will be useful,
+	* but WITHOUT ANY WARRANTY; without even the implied warranty of
+	* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+	* GNU General Public License for more details.
+	*
+	* You should have received a copy of the GNU General Public License
+	* along with this program; if not, write to the Free Software
+	* Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+	*
+	* See the gpl.txt file located in the top-level-directory of
+	* the archive of this library for complete text of license.
 */
 
 using System;
@@ -27,7 +27,7 @@ namespace Sharkbite.Irc
 {
 	/// <summary>
 	/// Manages the information about the file being
-	/// transfered. 
+	/// transfered.
 	/// </summary>
 	public sealed class DccFileInfo
 	{
@@ -51,7 +51,7 @@ namespace Sharkbite.Irc
 		/// <param name="completeFileSize">The size of the file being received as specified in the DCC Send
 		/// request.</param>
 		public DccFileInfo( FileInfo fileInfo, long completeFileSize)
-		{	
+		{
 			this.fileInfo = fileInfo;
 			this.completeFileSize = completeFileSize;
 			fileStartingPosition = 0;
@@ -63,10 +63,10 @@ namespace Sharkbite.Irc
 		/// </summary>
 		/// <param name="fileInfo">The local file being sent</param>
 		/// <exception cref="ArgumentException">If the file does not already exist.</exception>
-		public DccFileInfo( FileInfo fileInfo) 
+		public DccFileInfo( FileInfo fileInfo)
 		{
 			this.fileInfo = fileInfo;
-			if( !fileInfo.Exists ) 
+			if( !fileInfo.Exists )
 			{
 				throw new ArgumentException( fileInfo.Name + " does not exist.");
 			}
@@ -80,10 +80,10 @@ namespace Sharkbite.Irc
 		/// </summary>
 		/// <param name="fileName">The full pathname of local file being sent</param>
 		/// <exception cref="ArgumentException">If the file does not already exist.</exception>
-		public DccFileInfo( string fileName ) 
+		public DccFileInfo( string fileName )
 		{
 			this.fileInfo = new FileInfo(fileName);
-			if( !fileInfo.Exists ) 
+			if( !fileInfo.Exists )
 			{
 				throw new ArgumentException( fileName + " does not exist.");
 			}
@@ -96,9 +96,9 @@ namespace Sharkbite.Irc
 		/// Where to start reading or writing a file. Used during DCC Resume actions.
 		/// </summary>
 		/// <value>A read-only long indicating the location within the file.</value>
-		public long FileStartingPosition 
+		public long FileStartingPosition
 		{
-			get 
+			get
 			{
 				return fileStartingPosition;
 			}
@@ -110,9 +110,9 @@ namespace Sharkbite.Irc
 		/// <value>A read-only long.</value>
 		public long BytesTransfered
 		{
-			get 
+			get
 			{
-				lock (this ) 
+				lock (this )
 				{
 					return bytesTransfered;
 				}
@@ -123,9 +123,9 @@ namespace Sharkbite.Irc
 		/// of a file being sent or the number sent in the DCC SEND request.
 		/// </summary>
 		/// <value>A read-only long.</value>
-		public long CompleteFileSize 
+		public long CompleteFileSize
 		{
-			get 
+			get
 			{
 				return completeFileSize;
 			}
@@ -135,17 +135,17 @@ namespace Sharkbite.Irc
 		/// without the path.
 		/// </summary>
 		/// <value>A read-only string.</value>
-		public string DccFileName 
+		public string DccFileName
 		{
-			get 
+			get
 			{
 				return DccUtil.SpacesToUnderscores(fileInfo.Name);
 			}
 		}
 
-		internal FileStream TransferStream 
+		internal FileStream TransferStream
 		{
-			get 
+			get
 			{
 				return fileStream;
 			}
@@ -156,9 +156,9 @@ namespace Sharkbite.Irc
 		/// to the total count.
 		/// </summary>
 		/// <param name="additionalBytes"></param>
-		internal void AddBytesTransfered( int additionalBytes ) 
+		internal void AddBytesTransfered( int additionalBytes )
 		{
-			lock( this ) 
+			lock( this )
 			{
 				bytesTransfered += additionalBytes;
 			}
@@ -167,7 +167,7 @@ namespace Sharkbite.Irc
 		/// Does the position sent in the DCC Accept message
 		/// match what we expect?
 		/// </summary>
-		internal bool AcceptPositionMatches( long position ) 
+		internal bool AcceptPositionMatches( long position )
 		{
 			return position == fileStartingPosition;
 		}
@@ -175,7 +175,7 @@ namespace Sharkbite.Irc
 		/// Our Resume request was accepted so start
 		/// writing at the current position + 1.
 		/// </summary>
-		internal void GotoWritePosition() 
+		internal void GotoWritePosition()
 		{
 			fileStream.Seek( fileStartingPosition +1, SeekOrigin.Begin );
 		}
@@ -183,7 +183,7 @@ namespace Sharkbite.Irc
 		/// Advance to the correct reading start
 		/// position.
 		/// </summary>
-		internal void GotoReadPosition() 
+		internal void GotoReadPosition()
 		{
 			fileStream.Seek( fileStartingPosition, SeekOrigin.Begin );
 		}
@@ -191,7 +191,7 @@ namespace Sharkbite.Irc
 		/// Is the position where the remote user would to to resume
 		/// valid?
 		/// </summary>
-		internal bool ResumePositionValid( long position ) 
+		internal bool ResumePositionValid( long position )
 		{
 			return position > 1 && position < fileInfo.Length;
 		}
@@ -199,21 +199,21 @@ namespace Sharkbite.Irc
 		/// Can this file be resumed, i.e. does it
 		/// support random access?
 		/// </summary>
-		internal bool CanResume() 
+		internal bool CanResume()
 		{
 			return fileStream.CanSeek;
 		}
 		/// <summary>
 		/// Start a Resume where the file last left off.
 		/// </summary>
-		internal void SetResumeToFileSize() 
+		internal void SetResumeToFileSize()
 		{
 			fileStartingPosition = fileInfo.Length;
 		}
 		/// <summary>
 		/// Set the point at which the transfer will begin
 		/// </summary>
-		internal void SetResumePosition( long resumePosition ) 
+		internal void SetResumePosition( long resumePosition )
 		{
 			fileStartingPosition = resumePosition;
 			bytesTransfered = fileStartingPosition;
@@ -221,7 +221,7 @@ namespace Sharkbite.Irc
 		/// <summary>
 		/// Where in the file is the transfer currently at?
 		/// </summary>
-		internal long CurrentFilePosition() 
+		internal long CurrentFilePosition()
 		{
 			return BytesTransfered + fileStartingPosition;
 		}
@@ -230,11 +230,11 @@ namespace Sharkbite.Irc
 		/// </summary>
 		internal Boolean AllBytesTransfered()
 		{
-			if( completeFileSize == 0 ) 
+			if( completeFileSize == 0 )
 			{
 				return false;
 			}
-			else 
+			else
 			{
 				return (fileStartingPosition + BytesTransfered ) == completeFileSize;
 			}
@@ -242,9 +242,9 @@ namespace Sharkbite.Irc
 		/// <summary>
 		/// Close the file stream.
 		/// </summary>
-		internal void CloseFile() 
+		internal void CloseFile()
 		{
-			if( fileStream != null ) 
+			if( fileStream != null )
 			{
 				fileStream.Close();
 			}
@@ -252,28 +252,28 @@ namespace Sharkbite.Irc
 		/// <summary>
 		/// Set this file stream to a read only one.
 		/// </summary>
-		internal void OpenForRead() 
+		internal void OpenForRead()
 		{
 			fileStream = fileInfo.OpenRead();
 		}
 		/// <summary>
 		/// Set this file stream to a write only one.
 		/// </summary>
-		internal void OpenForWrite() 
+		internal void OpenForWrite()
 		{
 			fileStream = fileInfo.OpenWrite();
 		}
 		/// <summary>
 		/// Should we try to resume this file download?
 		/// </summary>
-		internal bool ShouldResume() 
+		internal bool ShouldResume()
 		{
 			return fileInfo.Length > 0 && CanResume();
 		}
 		/// <summary>
 		/// Determine whether the acks sent during an upload
 		/// signal that all bytes have been sent.
-		/// 
+		///
 		/// BitchX sends bad acks after a resume but we can
 		/// catch that by testing for the same ack sent twice.
 		/// I sure hope others behave better since I don't
@@ -281,12 +281,12 @@ namespace Sharkbite.Irc
 		/// </summary>
 		/// <param name="ack"></param>
 		/// <returns>True if the acks are done</returns>
-		internal bool AcksFinished( long ack ) 
+		internal bool AcksFinished( long ack )
 		{
 			bool done = (ack == BytesTransfered || ack == lastAckValue);
 			lastAckValue = ack;
 			return done;
 		}
-	
+
 	}
 }

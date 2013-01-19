@@ -1,24 +1,24 @@
 /*
- * Thresher IRC client library
- * Copyright (C) 2002 Aaron Hunter <thresher@sharkbite.org>
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- * 
- * See the gpl.txt file located in the top-level-directory of
- * the archive of this library for complete text of license.
- */
+	* Thresher IRC client library
+	* Copyright (C) 2002 Aaron Hunter <thresher@sharkbite.org>
+	*
+	* This program is free software; you can redistribute it and/or
+	* modify it under the terms of the GNU General Public License
+	* as published by the Free Software Foundation; either version 2
+	* of the License, or (at your option) any later version.
+	*
+	* This program is distributed in the hope that it will be useful,
+	* but WITHOUT ANY WARRANTY; without even the implied warranty of
+	* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+	* GNU General Public License for more details.
+	*
+	* You should have received a copy of the GNU General Public License
+	* along with this program; if not, write to the Free Software
+	* Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+	*
+	* See the gpl.txt file located in the top-level-directory of
+	* the archive of this library for complete text of license.
+	*/
 
 using System;
 using System.Net;
@@ -76,7 +76,7 @@ namespace Sharkbite.Irc
 		{
 			get
 			{
-				if( remoteEndPoint == null ) 
+				if( remoteEndPoint == null )
 				{
 					return null;
 				}
@@ -85,19 +85,19 @@ namespace Sharkbite.Irc
 		}
 		/// <summary>
 		/// Read only property that returns the port
-		/// of the connection to the remote user. 
+		/// of the connection to the remote user.
 		/// </summary>
 		/// <remarks>
 		/// This will be a listen port if the remote user was
 		/// the initiator of the session or else it is simply a client port.
 		/// </remarks>
-		/// <value>The port as an integer. Will return -1 if the session 
+		/// <value>The port as an integer. Will return -1 if the session
 		/// has not yet been opened.</value>
 		public int Port
 		{
 			get
 			{
-				if( remoteEndPoint == null ) 
+				if( remoteEndPoint == null )
 				{
 					return -1;
 				}
@@ -108,9 +108,9 @@ namespace Sharkbite.Irc
 		/// The remote users TCP/IP information.
 		/// </summary>
 		/// <value>A read-only instance of IPEndPoint</value>
-		public IPEndPoint RemoteEndPoint 
+		public IPEndPoint RemoteEndPoint
 		{
-			get 
+			get
 			{
 				return remoteEndPoint;
 			}
@@ -120,9 +120,9 @@ namespace Sharkbite.Irc
 		/// the remote user can be found.
 		/// </summary>
 		/// <value>A read-only instance of Connection</value>
-		public Connection Connection 
+		public Connection Connection
 		{
-			get 
+			get
 			{
 				return connection;
 			}
@@ -132,13 +132,13 @@ namespace Sharkbite.Irc
 		/// A friendly representation of this object.
 		/// </summary>
 		/// <returns>The remote's user nick and his IP address, e.g. Nick@192.168.0.23</returns>
-		public override string ToString() 
+		public override string ToString()
 		{
-			if( RemoteAddress == null ) 
+			if( RemoteAddress == null )
 			{
 				return Nick;
 			}
-			else 
+			else
 			{
 				return Nick + "@" + RemoteAddress.ToString();
 			}

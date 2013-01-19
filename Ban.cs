@@ -1,19 +1,19 @@
-﻿/*
- Copyright 2011 MCForge
-		
-	Dual-licensed under the	Educational Community License, Version 2.0 and
-	the GNU General Public License, Version 3 (the "Licenses"); you may
-	not use this file except in compliance with the Licenses. You may
-	obtain a copy of the Licenses at
-	
-	http://www.opensource.org/licenses/ecl2.php
-	http://www.gnu.org/licenses/gpl-3.0.html
-	
-	Unless required by applicable law or agreed to in writing,
-	software distributed under the Licenses are distributed on an "AS IS"
-	BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
-	or implied. See the Licenses for the specific language governing
-	permissions and limitations under the Licenses.
+/*
+	Copyright 2011 MCForge
+
+		Dual-licensed under the	Educational Community License, Version 2.0 and
+		the GNU General Public License, Version 3 (the "Licenses"); you may
+		not use this file except in compliance with the Licenses. You may
+		obtain a copy of the Licenses at
+
+		http://www.opensource.org/licenses/ecl2.php
+		http://www.gnu.org/licenses/gpl-3.0.html
+
+		Unless required by applicable law or agreed to in writing,
+		software distributed under the Licenses are distributed on an "AS IS"
+		BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+		or implied. See the Licenses for the specific language governing
+		permissions and limitations under the Licenses.
 */
 using System;
 using System.Collections.Generic;
@@ -63,11 +63,11 @@ namespace MCForge
 			}
 			File.AppendAllText("text/bans.txt", pl + " " + whol + " " + reasonl + " " + stealthstr + " " + datetimel + " " + oldrankl + "\r\n");
 		}
-        /// <summary>
-        /// Checks if there's a ban record found with the specified username
-        /// </summary>
-        /// <param name="who">the Player's username to check</param>
-        /// <returns>if the player is banned</returns>
+		/// <summary>
+		/// Checks if there's a ban record found with the specified username
+		/// </summary>
+		/// <param name="who">the Player's username to check</param>
+		/// <returns>if the player is banned</returns>
 		public static bool Isbanned(string who)
 		{
 			who = who.ToLower();
@@ -77,11 +77,11 @@ namespace MCForge
 			}
 			return false;
 		}
-        /// <summary>
-        /// Gives info about the ban
-        /// </summary>
-        /// <param name="who">the username to check</param>
-        /// <returns>A string array with { banned by, ban reason, stealth ban, date and time, previous rank } or if not found {"","","","",""}</returns>
+		/// <summary>
+		/// Gives info about the ban
+		/// </summary>
+		/// <param name="who">the username to check</param>
+		/// <returns>A string array with { banned by, ban reason, stealth ban, date and time, previous rank } or if not found {"","","","",""}</returns>
 		public static string[] Getbandata(string who)
 		{
 			who = who.ToLower();
@@ -100,11 +100,11 @@ namespace MCForge
 			string[] end = { bannedby, reason, timedate, oldrank, stealth };
 			return end;
 		}
-        /// <summary>
-        /// Unbans a user
-        /// </summary>
-        /// <param name="name">username to unban</param>
-        /// <returns>If the unban was successfull or not</returns>
+		/// <summary>
+		/// Unbans a user
+		/// </summary>
+		/// <param name="name">username to unban</param>
+		/// <returns>If the unban was successfull or not</returns>
 		public static bool Deleteban(string name)
 		{
 			name = name.ToLower();
@@ -116,52 +116,52 @@ namespace MCForge
 					sb.Append(line + "\r\n");
 				else
 					success = true;
+				}
+				File.WriteAllText("text/bans.txt", sb.ToString());
+				return success;
 			}
-			File.WriteAllText("text/bans.txt", sb.ToString());
-			return success;
-		}
-        /// <summary>
-        /// Change the banreason for a specific player
-        /// </summary>
-        /// <param name="who">The username to edit the ban reason from</param>
-        /// <param name="reason">The new banreason</param>
-        /// <returns>empty string if succesfull, otherwise error message</returns>
-		public static string Editreason(string who, string reason)
-		{
-			who = who.ToLower();
-			bool found = false;
-			string endproduct = "";
-			if (Isbanned(who))
+			/// <summary>
+			/// Change the banreason for a specific player
+			/// </summary>
+			/// <param name="who">The username to edit the ban reason from</param>
+			/// <param name="reason">The new banreason</param>
+			/// <returns>empty string if succesfull, otherwise error message</returns>
+			public static string Editreason(string who, string reason)
 			{
-				foreach (string line in File.ReadAllLines("text/bans.txt"))
+				who = who.ToLower();
+				bool found = false;
+				string endproduct = "";
+				if (Isbanned(who))
 				{
-					if (line.Split(' ')[1] == who)
+					foreach (string line in File.ReadAllLines("text/bans.txt"))
 					{
-						string replacethis = line.Split(' ')[2];
-						string oldline = line;
-						string newline = oldline.Replace(replacethis, reason);
-						endproduct = endproduct + newline + "\r\n";
-						found = true;
+						if (line.Split(' ')[1] == who)
+						{
+							string replacethis = line.Split(' ')[2];
+							string oldline = line;
+							string newline = oldline.Replace(replacethis, reason);
+							endproduct = endproduct + newline + "\r\n";
+							found = true;
+						}
+						else
+						{
+							endproduct = endproduct + line + "\r\n";
+						}
+					}
+					if (found)
+					{
+						File.WriteAllText("text/bans.txt", endproduct);
+						return "";
 					}
 					else
 					{
-						endproduct = endproduct + line + "\r\n";
+						return "Couldn't find baninfo about this player!";
 					}
-				}
-				if (found)
-				{
-					File.WriteAllText("text/bans.txt", endproduct);
-					return "";
 				}
 				else
 				{
-					return "Couldn't find baninfo about this player!";
+					return "This player isn't banned!";
 				}
 			}
-			else
-			{
-				return "This player isn't banned!";
-			}
 		}
-	}
 }

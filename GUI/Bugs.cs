@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -9,16 +9,16 @@ using System.Windows.Forms;
 
 namespace MCForge.GUI
 {
-    public partial class Bugs : Form
-    {
-        public Bugs()
-        {
-            InitializeComponent();
-        }
+	public partial class Bugs : Form
+	{
+		public Bugs()
+		{
+			InitializeComponent();
+		}
 
-        private void button1_Click(object sender, EventArgs e)
-        {
+		private void button1_Click(object sender, EventArgs e)
+		{
 
-        }
-    }
+		}
+	}
 }

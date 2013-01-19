@@ -1,14 +1,14 @@
 /*
 	Copyright 2011 MCForge
-		
+
 	Dual-licensed under the	Educational Community License, Version 2.0 and
 	the GNU General Public License, Version 3 (the "Licenses"); you may
 	not use this file except in compliance with the Licenses. You may
 	obtain a copy of the Licenses at
-	
+
 	http://www.opensource.org/licenses/ecl2.php
 	http://www.gnu.org/licenses/gpl-3.0.html
-	
+
 	Unless required by applicable law or agreed to in writing,
 	software distributed under the Licenses are distributed on an "AS IS"
 	BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
@@ -27,35 +27,35 @@ using System.Threading;
 
 namespace MCForge.Commands
 {
-    public class CmdMuseum : Command
-    {
-        public override string name { get { return "museum"; } }
-        public override string shortcut { get { return ""; } }
-        public override string type { get { return "other"; } }
-        public override bool museumUsable { get { return true; } }
-        public override LevelPermission defaultRank { get { return LevelPermission.Guest; } }
-        public CmdMuseum() { }
+	public class CmdMuseum : Command
+	{
+		public override string name { get { return "museum"; } }
+		public override string shortcut { get { return ""; } }
+		public override string type { get { return "other"; } }
+		public override bool museumUsable { get { return true; } }
+		public override LevelPermission defaultRank { get { return LevelPermission.Guest; } }
+		public CmdMuseum() { }
 
-        public override void Use(Player p, string message)
-        {
+		public override void Use(Player p, string message)
+		{
 
-            string path;
+			string path;
 
-            if (message.Split(' ').Length == 1) path = "levels/" + message + ".lvl";
-            else if (message.Split(' ').Length == 2) try { path = @Server.backupLocation + "/" + message.Split(' ')[0] + "/" + int.Parse(message.Split(' ')[1]) + "/" + message.Split(' ')[0] + ".lvl"; }
-                catch { Help(p); return; }
-            else { Help(p); return; }
+			if (message.Split(' ').Length == 1) path = "levels/" + message + ".lvl";
+			else if (message.Split(' ').Length == 2) try { path = @Server.backupLocation + "/" + message.Split(' ')[0] + "/" + int.Parse(message.Split(' ')[1]) + "/" + message.Split(' ')[0] + ".lvl"; }
+				catch { Help(p); return; }
+			else { Help(p); return; }
 
-            if (File.Exists(path))
-            {
-                FileStream fs = File.OpenRead(path);
-                try
-                {
+			if (File.Exists(path))
+			{
+				FileStream fs = File.OpenRead(path);
+				try
+				{
 
-                    GZipStream gs = new GZipStream(fs, CompressionMode.Decompress);
-                    byte[] ver = new byte[2];
-                    gs.Read(ver, 0, ver.Length);
-                    ushort version = BitConverter.ToUInt16(ver, 0);
+					GZipStream gs = new GZipStream(fs, CompressionMode.Decompress);
+					byte[] ver = new byte[2];
+					gs.Read(ver, 0, ver.Length);
+					ushort version = BitConverter.ToUInt16(ver, 0);
 					ushort[] vars = new ushort[6];
 					byte[] rot = new byte[2];
 
@@ -164,18 +164,18 @@ namespace MCForge.Commands
 
 					if (!p.hidden)
 					{
-                        Player.GlobalMessage(p.color + p.prefix + p.name + Server.DefaultColor + " went to the " + level.name);
+						Player.GlobalMessage(p.color + p.prefix + p.name + Server.DefaultColor + " went to the " + level.name);
 					}
 				}
-                catch (Exception ex) { Player.SendMessage(p, "Error loading level."); Server.ErrorLog(ex); return; }
-                finally { fs.Close(); }
-            }
-            else { Player.SendMessage(p, "Level or backup could not be found."); return; }
-        }
-        public override void Help(Player p)
-        {
-            Player.SendMessage(p, "/museum <map> <restore> - Allows you to access a restore of the map entered.");
-            Player.SendMessage(p, "Works on offline maps");
-        }
-    }
+				catch (Exception ex) { Player.SendMessage(p, "Error loading level."); Server.ErrorLog(ex); return; }
+				finally { fs.Close(); }
+			}
+			else { Player.SendMessage(p, "Level or backup could not be found."); return; }
+		}
+		public override void Help(Player p)
+		{
+			Player.SendMessage(p, "/museum <map> <restore> - Allows you to access a restore of the map entered.");
+			Player.SendMessage(p, "Works on offline maps");
+		}
+	}
 }

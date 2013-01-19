@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -10,26 +10,26 @@ namespace MCForge
 	public class MojangAccount
 	{
 		static Dictionary<string, int> users = new Dictionary<string, int>();
-		public static bool HasID(string truename) 
+		public static bool HasID(string truename)
 		{
 			return GetID(truename) != -1;
 		}
-		
+
 		public static int GetID(string truename)
 		{
 			if (users.ContainsKey(truename))
 				return users[truename];
 			return -1;
 		}
-		
-		public static void AddUser(string truename) 
+
+		public static void AddUser(string truename)
 		{
 			int i = users.Count;
 			users.Add(truename, i);
 			Save();
 		}
-		
-		public static void Save() 
+
+		public static void Save()
 		{
 			string[] lines = new string[users.Count];
 			int i = 0; //because fuck forloops
@@ -41,7 +41,7 @@ namespace MCForge
 			File.WriteAllLines("extra/mojang.dat", lines);
 			lines = null;
 		}
-		
+
 		public static void Load()
 		{
 			if (!File.Exists("extra/mojang.dat")) {
@@ -49,7 +49,7 @@ namespace MCForge
 				return;
 			}
 			string[] lines = File.ReadAllLines("extra/mojang.dat");
-			foreach (string s in lines) 
+			foreach (string s in lines)
 			{
 				int id = int.Parse(s.Split(':')[1]);
 				string user = s.Split(':')[0];

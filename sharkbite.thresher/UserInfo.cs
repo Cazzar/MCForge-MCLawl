@@ -1,23 +1,23 @@
 /*
- * Thresher IRC client library
- * Copyright (C) 2002 Aaron Hunter <thresher@sharkbite.org>
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- * 
- * See the gpl.txt file located in the top-level-directory of
- * the archive of this library for complete text of license.
+	* Thresher IRC client library
+	* Copyright (C) 2002 Aaron Hunter <thresher@sharkbite.org>
+	*
+	* This program is free software; you can redistribute it and/or
+	* modify it under the terms of the GNU General Public License
+	* as published by the Free Software Foundation; either version 2
+	* of the License, or (at your option) any later version.
+	*
+	* This program is distributed in the hope that it will be useful,
+	* but WITHOUT ANY WARRANTY; without even the implied warranty of
+	* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+	* GNU General Public License for more details.
+	*
+	* You should have received a copy of the GNU General Public License
+	* along with this program; if not, write to the Free Software
+	* Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+	*
+	* See the gpl.txt file located in the top-level-directory of
+	* the archive of this library for complete text of license.
 */
 
 namespace Sharkbite.Irc
@@ -26,7 +26,7 @@ namespace Sharkbite.Irc
 	/// A convenient holder of user information. Instances of this class
 	/// are created internally.
 	/// </summary>
-	public class UserInfo 
+	public class UserInfo
 	{
 		/// <summary>The user's handle.</summary>
 		private readonly string nickName;
@@ -39,7 +39,7 @@ namespace Sharkbite.Irc
 		/// <summary>
 		/// Creat an empty instance
 		/// </summary>
-		private UserInfo() 
+		private UserInfo()
 		{
 			nickName = "";
 			userName = "";
@@ -48,7 +48,7 @@ namespace Sharkbite.Irc
 		/// <summary>
 		/// Create a new UserInfo and set all its values.
 		/// </summary>
-		public UserInfo(string nick, string name, string host) 
+		public UserInfo(string nick, string name, string host)
 		{
 			nickName = nick;
 			userName = name;
@@ -60,7 +60,7 @@ namespace Sharkbite.Irc
 		/// </summary>
 		public string Nick
 		{
-			get 
+			get
 			{
 				return nickName;
 			}
@@ -78,9 +78,9 @@ namespace Sharkbite.Irc
 		/// <summary>
 		/// The hostname of the IRC user's machine.
 		/// </summary>
-		public string Hostname 
+		public string Hostname
 		{
-			get 
+			get
 			{
 				return hostName;
 			}
@@ -90,7 +90,7 @@ namespace Sharkbite.Irc
 		/// by a method signature but no infomation is available, e.g. the last reply
 		/// from a Who request.
 		/// </summary>
-		public static UserInfo Empty 
+		public static UserInfo Empty
 		{
 			get
 			{
@@ -102,9 +102,9 @@ namespace Sharkbite.Irc
 		/// A string representation of this object which
 		/// shows all its values.
 		/// </summary>
-		public override string ToString() 
+		public override string ToString()
 		{
-			return string.Format("Nick={0} User={1} Host={2}", Nick, User, Hostname ); 
+			return string.Format("Nick={0} User={1} Host={2}", Nick, User, Hostname );
 		}
 	}
 }

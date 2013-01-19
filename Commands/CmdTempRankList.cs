@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright 2011 MCForge
 Dual-licensed under the Educational Community License, Version 2.0 and
 the GNU General Public License, Version 3 (the "Licenses"); you may
@@ -20,38 +20,38 @@ using System.IO;
 
 namespace MCForge.Commands
 {
-    class CmdTempRankList : Command
-    {
-        public override string name { get { return "tempranklist"; } }
-        public override string shortcut { get { return "trl"; } }
-        public override string type { get { return "mod"; } }
-        public override bool museumUsable { get { return true; } }
-        public override LevelPermission defaultRank { get { return LevelPermission.Operator; } }
-        public CmdTempRankList() { }
+	class CmdTempRankList : Command
+	{
+		public override string name { get { return "tempranklist"; } }
+		public override string shortcut { get { return "trl"; } }
+		public override string type { get { return "mod"; } }
+		public override bool museumUsable { get { return true; } }
+		public override LevelPermission defaultRank { get { return LevelPermission.Operator; } }
+		public CmdTempRankList() { }
 
-        public override void Use(Player p, string message)
-        {
-            if (message != "")
-            {
-                Help(p);
-                Player.SendMessage(p, "&cThis command contains no arguments");
-                return;
-            }
-            string alltext = File.ReadAllText("text/tempranks.txt");
-            if (alltext == "")
-            {
-                Player.SendMessage(p, "&cThere are no players with a temporary rank assigned.");
-                return;
-            }
-            Player.SendMessage(p, "&ePlayers with a temporary rank assigned:");
-            foreach (string line in File.ReadAllLines("text/tempranks.txt"))
-            {
-                Player.SendMessage(p, "&a" + line.Split(' ')[0]);
-            }
-        }
-        public override void Help(Player p)
-        {
-            Player.SendMessage(p, "/tempranklist - Lists every user with a temporary rank");
-        }
-    }
+		public override void Use(Player p, string message)
+		{
+			if (message != "")
+			{
+				Help(p);
+				Player.SendMessage(p, "&cThis command contains no arguments");
+				return;
+			}
+			string alltext = File.ReadAllText("text/tempranks.txt");
+			if (alltext == "")
+			{
+				Player.SendMessage(p, "&cThere are no players with a temporary rank assigned.");
+				return;
+			}
+			Player.SendMessage(p, "&ePlayers with a temporary rank assigned:");
+			foreach (string line in File.ReadAllLines("text/tempranks.txt"))
+			{
+				Player.SendMessage(p, "&a" + line.Split(' ')[0]);
+			}
+		}
+		public override void Help(Player p)
+		{
+			Player.SendMessage(p, "/tempranklist - Lists every user with a temporary rank");
+		}
+	}
 }
