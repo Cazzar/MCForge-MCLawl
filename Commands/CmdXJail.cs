@@ -1,14 +1,14 @@
-﻿/*
+/*
 	Copyright 2011 MCForge
-		
+
 	Dual-licensed under the	Educational Community License, Version 2.0 and
 	the GNU General Public License, Version 3 (the "Licenses"); you may
 	not use this file except in compliance with the Licenses. You may
 	obtain a copy of the Licenses at
-	
+
 	http://www.opensource.org/licenses/ecl2.php
 	http://www.gnu.org/licenses/gpl-3.0.html
-	
+
 	Unless required by applicable law or agreed to in writing,
 	software distributed under the Licenses are distributed on an "AS IS"
 	BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
@@ -18,36 +18,36 @@
 
 namespace MCForge.Commands
 {
-    using System;
-    using System.IO;
-    public class CmdXJail : Command
-    {
-        public override string name { get { return "xjail"; } }
-        public override string shortcut { get { return "xj"; } }
-        public override string type { get { return "other"; } }
-        public override LevelPermission defaultRank { get { return LevelPermission.Operator; } }
-        public override bool museumUsable { get { return true; } }
-        public override void Help(Player p)
-        {
-            Player.SendMessage(p, "/xjail <player> - Mutes <player>, freezes <player> and sends <player> to the XJail map (shortcut = /xj)");
-            Player.SendMessage(p, "If <player> is already jailed, <player> will be spawned, unfrozen and unmuted");
-            Player.SendMessage(p, "/xjail set - Sets the map to be used for xjail to your current map and sets jail to current location");
-        }
-        public override void Use(Player p, string message)
-        {
-            string dir = "extra/jail/";
-            string jailMapFile = dir + "xjail.map.xjail";
-            if (!Directory.Exists(dir)) { Directory.CreateDirectory(dir); }
-            if (!File.Exists(jailMapFile))
-            {
+	using System;
+	using System.IO;
+	public class CmdXJail : Command
+	{
+		public override string name { get { return "xjail"; } }
+		public override string shortcut { get { return "xj"; } }
+		public override string type { get { return "other"; } }
+		public override LevelPermission defaultRank { get { return LevelPermission.Operator; } }
+		public override bool museumUsable { get { return true; } }
+		public override void Help(Player p)
+		{
+			Player.SendMessage(p, "/xjail <player> - Mutes <player>, freezes <player> and sends <player> to the XJail map (shortcut = /xj)");
+			Player.SendMessage(p, "If <player> is already jailed, <player> will be spawned, unfrozen and unmuted");
+			Player.SendMessage(p, "/xjail set - Sets the map to be used for xjail to your current map and sets jail to current location");
+		}
+		public override void Use(Player p, string message)
+		{
+			string dir = "extra/jail/";
+			string jailMapFile = dir + "xjail.map.xjail";
+			if (!Directory.Exists(dir)) { Directory.CreateDirectory(dir); }
+			if (!File.Exists(jailMapFile))
+			{
 				using (StreamWriter SW = new StreamWriter(jailMapFile))
 				{
 					SW.WriteLine(Server.mainLevel.name);
 				}
-            }
-            if (message == "") { Help(p); return; }
-            else
-            {
+			}
+			if (message == "") { Help(p); return; }
+			else
+			{
 				using (StreamReader SR = new StreamReader(jailMapFile))
 				{
 					string xjailMap = SR.ReadLine();
@@ -70,7 +70,7 @@ namespace MCForge.Commands
 					else
 					{
 						Player player = Player.Find(message);
-                       
+
 						if (player != null)
 						{
 							Command move = Command.all.Find("move");
@@ -117,7 +117,7 @@ namespace MCForge.Commands
 						else { Player.SendMessage(p, "Player not found"); return; }
 					}
 				}
-            }
-        }
-    }
+			}
+		}
+	}
 }

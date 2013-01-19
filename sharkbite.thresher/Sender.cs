@@ -1,23 +1,23 @@
 /*
- * Thresher IRC client library
- * Copyright (C) 2002 Aaron Hunter <thresher@sharkbite.org>
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- * 
- * See the gpl.txt file located in the top-level-directory of
- * the archive of this library for complete text of license.
+	* Thresher IRC client library
+	* Copyright (C) 2002 Aaron Hunter <thresher@sharkbite.org>
+	*
+	* This program is free software; you can redistribute it and/or
+	* modify it under the terms of the GNU General Public License
+	* as published by the Free Software Foundation; either version 2
+	* of the License, or (at your option) any later version.
+	*
+	* This program is distributed in the hope that it will be useful,
+	* but WITHOUT ANY WARRANTY; without even the implied warranty of
+	* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+	* GNU General Public License for more details.
+	*
+	* You should have received a copy of the GNU General Public License
+	* along with this program; if not, write to the Free Software
+	* Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+	*
+	* See the gpl.txt file located in the top-level-directory of
+	* the archive of this library for complete text of license.
 */
 
 using System;
@@ -32,22 +32,22 @@ namespace Sharkbite.Irc
 	/// object. All methods in this class are thread safe.
 	/// </summary>
 	/// <remarks>
-	/// <para>Due to the asynchronous nature of IRC, none of these commands 
+	/// <para>Due to the asynchronous nature of IRC, none of these commands
 	/// have a return value. To get that value (or possibly an error) the client must
 	/// handle the corresponding event. For example, to check if a user is online
-	/// the client would send <see cref="Sender.Ison"/> then check the value of the 
+	/// the client would send <see cref="Sender.Ison"/> then check the value of the
 	/// <see cref="Listener.OnIson"/> event to receive the answer.</para>
 	/// <para>When a command can return an error, the possible error replies
 	/// are listed. An error message will be sent via the <see cref="Listener.OnError"/> event
-	/// with one of the listed error codes as a parameter. When checking for these 
+	/// with one of the listed error codes as a parameter. When checking for these
 	/// errors use the constants from <see cref="ReplyCode"/>.
-	/// </para> 
-	/// <para>The maximum length of any command string sent to the 
+	/// </para>
+	/// <para>The maximum length of any command string sent to the
 	/// server is 512 characters.</para>
 	/// </remarks>
 	/// <example><code>
 	/// //Create a Connection object which will automatically create its own Sender
-	/// Connection connection = new Connection( args, false, false );	
+	/// Connection connection = new Connection( args, false, false );
 	/// //Send commands using the Connection object and its Sender instance.
 	/// //No need to keep a separate reference to the Sender object
 	/// connection.Sender.PublicMessage("#thresher", "hello");
@@ -59,7 +59,7 @@ namespace Sharkbite.Irc
 		/// </summary>
 		internal Sender(Connection connection ) : base( connection) {}
 
-		private bool IsEmpty( string aString ) 
+		private bool IsEmpty( string aString )
 		{
 			return aString == null || aString.Trim().Length == 0;
 		}
@@ -71,20 +71,20 @@ namespace Sharkbite.Irc
 		/// <param name="parameter">The command parameter</param>
 		/// <param name="commandLength">The length of the command plus whitespace</param>
 		/// <returns></returns>
-		private string Truncate( string parameter, int commandLength ) 
+		private string Truncate( string parameter, int commandLength )
 		{
 			int max = MAX_COMMAND_SIZE - commandLength;
-			if (parameter.Length > max ) 
+			if (parameter.Length > max )
 			{
 				return parameter.Substring(0, max);
 			}
-			else 
+			else
 			{
 				return parameter;
 			}
 		}
 
-		private bool TooLong( StringBuilder buffer ) 
+		private bool TooLong( StringBuilder buffer )
 		{
 			//2 for CR LF
 			return (buffer.Length + 2) > MAX_COMMAND_SIZE;
@@ -95,7 +95,7 @@ namespace Sharkbite.Irc
 		/// the username, hostname and realname of a new user.
 		/// </summary>
 		/// <param name="args">The user Connection data</param>
-		internal void User( ConnectionArgs args ) 
+		internal void User( ConnectionArgs args )
 		{
 			lock( this )
 			{
@@ -114,9 +114,9 @@ namespace Sharkbite.Irc
 		/// <summary>
 		/// A client session is terminated with a quit message.
 		/// </summary>
-		/// <remarks> 
+		/// <remarks>
 		/// <para>The server
-		/// acknowledges this by sending an ERROR message to the client. 
+		/// acknowledges this by sending an ERROR message to the client.
 		/// </para>
 		/// <para>Before closing the Connection with the IRC server this method
 		/// will call <c>Listener.beforeDisconnect()</c> and after
@@ -124,18 +124,18 @@ namespace Sharkbite.Irc
 		/// </para>
 		/// </remarks>
 		/// <param name="reason">Reason for quitting.</param>
-		internal void Quit(string reason) 
+		internal void Quit(string reason)
 		{
-			lock( this ) 
+			lock( this )
 			{
 				Buffer.Append("QUIT");
-				if( IsEmpty( reason ) ) 
+				if( IsEmpty( reason ) )
 				{
 					ClearBuffer();
 					throw new ArgumentException("Quite reason cannot be null or empty.");
 				}
 				Buffer.Append(SPACE_COLON);
-				if (reason.Length > 502) 
+				if (reason.Length > 502)
 				{
 					reason = reason.Substring(0, 504);
 				}
@@ -155,7 +155,7 @@ namespace Sharkbite.Irc
 		/// </list>
 		/// </remarks>
 		/// <param name="message">The text sent by the IRC server in the PING message.</param>
-		internal void Pong(string message) 
+		internal void Pong(string message)
 		{
 			//Not synchronized because it will only be called during on OnPing event by
 			//the dispatch thread
@@ -165,14 +165,14 @@ namespace Sharkbite.Irc
 			Connection.SendAutomaticReply( Buffer );
 		}
 		/// <summary>
-		/// The PASS command is used to set a 'Connection password'. 
+		/// The PASS command is used to set a 'Connection password'.
 		/// </summary>
 		/// <remarks>
 		/// The optional password can and MUST be set before any attempt to register
 		/// the Connection is made. Currently this requires that user send a
 		/// PASS command before sending the NICK/USER combination.
 		/// </remarks>
-		internal void Pass( string password ) 
+		internal void Pass( string password )
 		{
 			lock( this )
 			{
@@ -181,7 +181,7 @@ namespace Sharkbite.Irc
 				Buffer.Append(password);
 				Connection.SendCommand( Buffer );
 			}
-		}	
+		}
 		/// <summary>
 		/// User registration consists of 3 commands:
 		/// 1. PASS
@@ -191,7 +191,7 @@ namespace Sharkbite.Irc
 		/// which case the client will have to register by manually calling Nick
 		/// and User.
 		/// </summary>
-		internal void RegisterConnection( ConnectionArgs args ) 
+		internal void RegisterConnection( ConnectionArgs args )
 		{
 			Pass( args.ServerPassword );
 			Nick( args.Nick );
@@ -199,7 +199,7 @@ namespace Sharkbite.Irc
 		}
 
 		/// <summary>
-		/// Join the specified channel. 
+		/// Join the specified channel.
 		/// </summary>
 		/// <remarks>
 		/// <para>Once a user has joined a channel, he receives information about
@@ -211,7 +211,7 @@ namespace Sharkbite.Irc
 		/// confirmation and is then sent the channel's topic ( <see cref="Listener.OnTopicRequest"/> and
 		/// the list of users who are on the channel ( <see cref="Listener.OnNames"/> ), which
 		/// MUST include the user joining.</para>
-		/// 
+		///
 		/// Possible Errors
 		/// <list type="bullet">
 		/// 	<item><description>ERR_NEEDMOREPARAMS</description></item>
@@ -234,18 +234,18 @@ namespace Sharkbite.Irc
 		/// </code></example>
 		/// <exception cref="ArgumentException">If the channel name is not valid.</exception>
 		/// <seealso cref="Listener.OnJoin"/>
-		public void Join( string channel ) 
+		public void Join( string channel )
 		{
-			lock( this ) 
+			lock( this )
 			{
-				if ( Rfc2812Util.IsValidChannelName( channel ) ) 
+				if ( Rfc2812Util.IsValidChannelName( channel ) )
 				{
 					Buffer.Append("JOIN");
 					Buffer.Append(SPACE);
 					Buffer.Append(channel);
 					Connection.SendCommand( Buffer );
 				}
-				else 
+				else
 				{
 					ClearBuffer();
 					throw new ArgumentException(channel + " is not a valid channel name.");
@@ -257,18 +257,18 @@ namespace Sharkbite.Irc
 		/// </summary>
 		/// <param name="channel">Channel to join</param>
 		/// <param name="password">The channel's pasword. Cannot be null or empty.</param>
-		/// <exception cref="ArgumentException">If the channel name is not valid or the password is null.</exception> 
+		/// <exception cref="ArgumentException">If the channel name is not valid or the password is null.</exception>
 		/// <seealso cref="Listener.OnJoin"/>
-		public void Join(string channel, string password) 
+		public void Join(string channel, string password)
 		{
-			lock( this ) 
+			lock( this )
 			{
-				if ( IsEmpty( password) ) 
+				if ( IsEmpty( password) )
 				{
 					ClearBuffer();
 					throw new ArgumentException("Password cannot be empty or null.");
 				}
-				if (Rfc2812Util.IsValidChannelName(channel)) 
+				if (Rfc2812Util.IsValidChannelName(channel))
 				{
 					Buffer.Append("JOIN");
 					Buffer.Append(SPACE);
@@ -279,7 +279,7 @@ namespace Sharkbite.Irc
 					Buffer.Append(password);
 					Connection.SendCommand( Buffer );
 				}
-				else 
+				else
 				{
 					ClearBuffer();
 					throw new ArgumentException(channel + " is not a valid channel name.");
@@ -304,31 +304,31 @@ namespace Sharkbite.Irc
 		/// <example><code>
 		/// //Make sure and verify that the nick is valid and of the right length
 		/// string nick = GetUserInput();
-		/// if( Rfc2812Util.IsValidNick( connection, nick) ) { 
+		/// if( Rfc2812Util.IsValidNick( connection, nick) ) {
 		/// connection.Sender.Nick( nick );
 		/// }
 		/// </code></example>
-		/// <exception cref="ArgumentException">If the nickname is not valid.</exception> 
+		/// <exception cref="ArgumentException">If the nickname is not valid.</exception>
 		/// <seealso cref="Listener.OnNick"/>
-		public void Nick( string newNick ) 
+		public void Nick( string newNick )
 		{
-			lock( this ) 
+			lock( this )
 			{
-				if ( Rfc2812Util.IsValidNick(newNick) ) 
+				if ( Rfc2812Util.IsValidNick(newNick) )
 				{
 					Buffer.Append("NICK");
 					Buffer.Append(SPACE);
 					Buffer.Append(newNick);
 					Connection.SendCommand( Buffer );
 				}
-				else 
+				else
 				{
 					ClearBuffer();
 					throw new ArgumentException(newNick + " is not a valid nickname.");
 				}
 			}
 		}
-		/// <summary> 
+		/// <summary>
 		/// Request a list of all nicknames on a given channel.
 		/// </summary>
 		/// <remarks>
@@ -344,25 +344,25 @@ namespace Sharkbite.Irc
 		/// //Make the request for several channels at once
 		/// connection.Sender.Names( "#test","#alpha","#bravo" );
 		/// </code></example>
-		/// <exception cref="ArgumentException">If any of the channels are not valid.</exception> 
+		/// <exception cref="ArgumentException">If any of the channels are not valid.</exception>
 		/// <seealso cref="Listener.OnNames"/>
-		public void Names( params string[] channels ) 
+		public void Names( params string[] channels )
 		{
-			lock( this ) 
+			lock( this )
 			{
-				if ( Rfc2812Util.IsValidChannelList( channels ) ) 
+				if ( Rfc2812Util.IsValidChannelList( channels ) )
 				{
 					Buffer.Append("NAMES");
 					Buffer.Append(SPACE);
 					Buffer.Append( String.Join(",", channels) );
-					if( TooLong( Buffer ) ) 
+					if( TooLong( Buffer ) )
 					{
 						ClearBuffer();
 						throw new ArgumentException("Channels are too long.");
 					}
 					Connection.SendCommand( Buffer );
 				}
-				else 
+				else
 				{
 					ClearBuffer();
 					throw new ArgumentException("One of the channel names is not valid.");
@@ -371,18 +371,18 @@ namespace Sharkbite.Irc
 		}
 		/// <summary>
 		/// Request a list of all visible channels along with their users. If the server allows this
-		/// kind of request then expect a rather large reply. 
+		/// kind of request then expect a rather large reply.
 		/// </summary>
 		/// <remarks>
 		/// Possible Errors
 		/// 	<list type="bullet">
 		/// 		<item><description>ERR_TOOMANYMATCHES</description></item>
 		/// 	</list>
-		/// </remarks> 
-		/// <seealso cref="Listener.OnNames"/> 
-		public void AllNames() 
+		/// </remarks>
+		/// <seealso cref="Listener.OnNames"/>
+		public void AllNames()
 		{
-			lock( this ) 
+			lock( this )
 			{
 				Buffer.Append("NAMES");
 				Connection.SendCommand( Buffer );
@@ -395,7 +395,7 @@ namespace Sharkbite.Irc
 		/// 	<list type="bullet">
 		/// 		<item><description>ERR_TOOMANYMATCHES</description></item>
 		/// </list>
-		/// </remarks> 
+		/// </remarks>
 		/// <param name="channels">One or more channel names.</param>
 		/// <example><code>
 		/// //Make the request for a single channel
@@ -403,25 +403,25 @@ namespace Sharkbite.Irc
 		/// //Make the request for several channels at once
 		/// connection.Sender.List( "#test","#alpha",#"bravo" );
 		/// </code></example>
-		/// <exception cref="ArgumentException">If any of the channels are not valid.</exception> 
-		/// <seealso cref="Listener.OnList"/> 
-		public void List(params string[] channels ) 
+		/// <exception cref="ArgumentException">If any of the channels are not valid.</exception>
+		/// <seealso cref="Listener.OnList"/>
+		public void List(params string[] channels )
 		{
-			lock( this ) 
+			lock( this )
 			{
-				if (Rfc2812Util.IsValidChannelList(channels)) 
+				if (Rfc2812Util.IsValidChannelList(channels))
 				{
 					Buffer.Append("LIST");
 					Buffer.Append(SPACE);
 					Buffer.Append( String.Join(",", channels) );
-					if( TooLong( Buffer ) ) 
+					if( TooLong( Buffer ) )
 					{
 						ClearBuffer();
 						throw new ArgumentException("Channels are too long.");
 					}
 					Connection.SendCommand( Buffer );
 				}
-				else 
+				else
 				{
 					ClearBuffer();
 					throw new ArgumentException("One of the channel names is not valid.");
@@ -437,11 +437,11 @@ namespace Sharkbite.Irc
 		/// 	<list type="bullet">
 		/// 		<item><description>ERR_TOOMANYMATCHES</description></item>
 		/// </list>
-		/// </remarks> 
+		/// </remarks>
 		/// <seealso cref="Listener.OnList"/>
-		public void AllList() 
+		public void AllList()
 		{
-			lock( this ) 
+			lock( this )
 			{
 				Buffer.Append("LIST");
 				Connection.SendCommand( Buffer );
@@ -461,19 +461,19 @@ namespace Sharkbite.Irc
 		/// <param name="newTopic">The new topic.</param>
 		/// <example><code>
 		/// connection.Sender.ChangeTopic( "#thresher","Beta 27 Released" );
-		/// </code></example>	
-		/// <exception cref="ArgumentException">If the channel name is not valid or the topic is null.</exception> 
-		/// <seealso cref="Listener.OnTopicChanged"/> 
-		public void ChangeTopic(string channel, string newTopic) 
+		/// </code></example>
+		/// <exception cref="ArgumentException">If the channel name is not valid or the topic is null.</exception>
+		/// <seealso cref="Listener.OnTopicChanged"/>
+		public void ChangeTopic(string channel, string newTopic)
 		{
-			lock( this ) 
+			lock( this )
 			{
-				if (IsEmpty( newTopic ) ) 
+				if (IsEmpty( newTopic ) )
 				{
 					ClearBuffer();
 					throw new ArgumentException("Topic cannot be empty or null.");
 				}
-				if (Rfc2812Util.IsValidChannelName(channel)) 
+				if (Rfc2812Util.IsValidChannelName(channel))
 				{
 					Buffer.Append("TOPIC");
 					Buffer.Append(SPACE);
@@ -484,7 +484,7 @@ namespace Sharkbite.Irc
 					Buffer.Append(newTopic);
 					Connection.SendCommand( Buffer );
 				}
-				else 
+				else
 				{
 					ClearBuffer();
 					throw new ArgumentException(channel + " is not a valid channel name.");
@@ -502,13 +502,13 @@ namespace Sharkbite.Irc
 		/// </list>
 		/// </remarks>
 		/// <param name="channel">The target channel.</param>
-		/// <exception cref="ArgumentException">If the channel name is not valid.</exception> 
-		/// <seealso cref="Listener.OnTopicChanged"/> 
-		public void ClearTopic(string channel) 
+		/// <exception cref="ArgumentException">If the channel name is not valid.</exception>
+		/// <seealso cref="Listener.OnTopicChanged"/>
+		public void ClearTopic(string channel)
 		{
-			lock( this ) 
+			lock( this )
 			{
-				if (Rfc2812Util.IsValidChannelName(channel)) 
+				if (Rfc2812Util.IsValidChannelName(channel))
 				{
 					Buffer.Append("TOPIC");
 					Buffer.Append(SPACE);
@@ -517,7 +517,7 @@ namespace Sharkbite.Irc
 					Buffer.Append(SPACE);
 					Connection.SendCommand( Buffer );
 				}
-				else 
+				else
 				{
 					ClearBuffer();
 					throw new ArgumentException(channel + " is not a valid channel name.");
@@ -539,20 +539,20 @@ namespace Sharkbite.Irc
 		/// </list>
 		/// </remarks>
 		/// <param name="channel">The target channel.</param>
-		/// <exception cref="ArgumentException">If the channel name is not valid.</exception> 
-		/// <seealso cref="Listener.OnTopicRequest"/> 
-		public void RequestTopic(string channel) 
+		/// <exception cref="ArgumentException">If the channel name is not valid.</exception>
+		/// <seealso cref="Listener.OnTopicRequest"/>
+		public void RequestTopic(string channel)
 		{
-			lock( this ) 
+			lock( this )
 			{
-				if (Rfc2812Util.IsValidChannelName(channel)) 
+				if (Rfc2812Util.IsValidChannelName(channel))
 				{
 					Buffer.Append("TOPIC");
 					Buffer.Append(SPACE);
 					Buffer.Append(channel);
 					Connection.SendCommand( Buffer );
 				}
-				else 
+				else
 				{
 					ClearBuffer();
 					throw new ArgumentException(channel + " is not a valid channel name.");
@@ -578,18 +578,18 @@ namespace Sharkbite.Irc
 		/// //Leave several at once
 		/// connection.Sender.Part( "Goodbye", "#test","#alpha",#"bravo" );
 		/// </code></example>
-		/// <exception cref="ArgumentException">If the channel name is not valid or the reason is null.</exception> 
-		/// <seealso cref="Listener.OnPart"/> 
-		public void Part( string reason, params string[] channels ) 
+		/// <exception cref="ArgumentException">If the channel name is not valid or the reason is null.</exception>
+		/// <seealso cref="Listener.OnPart"/>
+		public void Part( string reason, params string[] channels )
 		{
-			lock( this ) 
+			lock( this )
 			{
-				if ( IsEmpty( reason ) ) 
+				if ( IsEmpty( reason ) )
 				{
 					ClearBuffer();
 					throw new ArgumentException("Part reason cannot be empty or null.");
 				}
-				if (Rfc2812Util.IsValidChannelList(channels)) 
+				if (Rfc2812Util.IsValidChannelList(channels))
 				{
 					Buffer.Append("PART");
 					Buffer.Append(SPACE);
@@ -601,7 +601,7 @@ namespace Sharkbite.Irc
 					Buffer.Append(reason);
 					Connection.SendCommand( Buffer );
 				}
-				else 
+				else
 				{
 					ClearBuffer();
 					throw new ArgumentException("One of the channels names is not valid.");
@@ -612,20 +612,20 @@ namespace Sharkbite.Irc
 		/// Leave a channel without giving a reason.
 		/// </summary>
 		/// <param name="channel">The channel to leave.</param>
-		/// <exception cref="ArgumentException">If the channel name is not valid.</exception> 
-		/// <seealso cref="Listener.OnPart"/> 
-		public void Part( string channel ) 
+		/// <exception cref="ArgumentException">If the channel name is not valid.</exception>
+		/// <seealso cref="Listener.OnPart"/>
+		public void Part( string channel )
 		{
-			lock( this ) 
+			lock( this )
 			{
-				if (Rfc2812Util.IsValidChannelName( channel ) ) 
+				if (Rfc2812Util.IsValidChannelName( channel ) )
 				{
 					Buffer.Append("PART");
 					Buffer.Append(SPACE);
 					Buffer.Append( channel );
 					Connection.SendCommand( Buffer );
 				}
-				else 
+				else
 				{
 					ClearBuffer();
 					throw new ArgumentException( channel + " is not a valid channel name.");
@@ -634,9 +634,9 @@ namespace Sharkbite.Irc
 		}
 		/// <summary>Send a notice to a channel.</summary>
 		/// <remarks>
-		/// <para>The difference between a notice and a normal message is that 
-		/// automatic replies must never be sent in response to a notice. This rule 
-		/// applies to servers too - they must not send any error reply back to the 
+		/// <para>The difference between a notice and a normal message is that
+		/// automatic replies must never be sent in response to a notice. This rule
+		/// applies to servers too - they must not send any error reply back to the
 		/// client on receipt of a notice. The object of this rule is to avoid loops
 		/// between clients automatically sending something in response to
 		/// something it received. See <see cref="Sender.PublicMessage"/> for possible errors.</para>
@@ -645,22 +645,22 @@ namespace Sharkbite.Irc
 		/// <param name="message">Text message. If the text is too large to be sent in one
 		/// piece it will be broken up into smaller strings which will then
 		/// be sent individually.</param>
-		/// <exception cref="ArgumentException">If the channel name is not valid or the message is empty or null.</exception> 
-		/// <seealso cref="Listener.OnPublicNotice"/> 
-		public void PublicNotice(string channel, string message) 
+		/// <exception cref="ArgumentException">If the channel name is not valid or the message is empty or null.</exception>
+		/// <seealso cref="Listener.OnPublicNotice"/>
+		public void PublicNotice(string channel, string message)
 		{
-			lock( this ) 
+			lock( this )
 			{
-				if ( IsEmpty( message) ) 
+				if ( IsEmpty( message) )
 				{
 					ClearBuffer();
 					throw new ArgumentException("Notice message cannot be null or empty.");
 				}
-				if (Rfc2812Util.IsValidChannelName(channel) ) 
+				if (Rfc2812Util.IsValidChannelName(channel) )
 				{
 					// 11 is NOTICE + 2 x Spaces + : + CR + LF
 					int max = MAX_COMMAND_SIZE - 11 - channel.Length;
-					if (message.Length > max) 
+					if (message.Length > max)
 					{
 						string[] parts = BreakUpMessage( message, max );
 						foreach( string part in parts )
@@ -668,12 +668,12 @@ namespace Sharkbite.Irc
 							SendMessage("NOTICE", channel, part);
 						}
 					}
-					else 
+					else
 					{
 						SendMessage("NOTICE", channel, message);
 					}
 				}
-				else 
+				else
 				{
 					ClearBuffer();
 					throw new ArgumentException(channel + " is not a valid channel name.");
@@ -682,9 +682,9 @@ namespace Sharkbite.Irc
 		}
 		/// <summary>Send a notice to a user.</summary>
 		/// <remarks>
-		/// <para>The difference between a notice and a normal message is that 
-		/// automatic replies must never be sent in response to a notice. This rule 
-		/// applies to servers too - they must not send any error reply back to the 
+		/// <para>The difference between a notice and a normal message is that
+		/// automatic replies must never be sent in response to a notice. This rule
+		/// applies to servers too - they must not send any error reply back to the
 		/// client on receipt of a notice. The object of this rule is to avoid loops
 		/// between clients automatically sending something in response to
 		/// something it received. See <see cref="Sender.PrivateMessage"/> for possible errors.</para>
@@ -693,22 +693,22 @@ namespace Sharkbite.Irc
 		/// <param name="message">Text message. If the text is too large to be sent in one
 		/// piece it will be broken up into smaller strings which will then
 		/// be sent individually.</param>
-		/// <exception cref="ArgumentException">If the nick is not valid or the message is empty or null.</exception> 
-		/// <seealso cref="Listener.OnPrivateNotice"/> 
-		public void PrivateNotice(string nick, string message) 
+		/// <exception cref="ArgumentException">If the nick is not valid or the message is empty or null.</exception>
+		/// <seealso cref="Listener.OnPrivateNotice"/>
+		public void PrivateNotice(string nick, string message)
 		{
-			lock( this ) 
+			lock( this )
 			{
-				if ( IsEmpty(message ) ) 
+				if ( IsEmpty(message ) )
 				{
 					ClearBuffer();
 					throw new ArgumentException("Notice message cannot be empty or null.");
 				}
-				if ( Rfc2812Util.IsValidNick(nick)) 
+				if ( Rfc2812Util.IsValidNick(nick))
 				{
 					// 11 is NOTICE + 2 x Spaces + : + CR + LF
 					int max = MAX_COMMAND_SIZE - 11 - nick.Length;
-					if (message.Length > max) 
+					if (message.Length > max)
 					{
 						string[] parts = BreakUpMessage( message, max );
 						foreach( string part in parts )
@@ -716,12 +716,12 @@ namespace Sharkbite.Irc
 							SendMessage("NOTICE", nick, part);
 						}
 					}
-					else 
+					else
 					{
 						SendMessage("NOTICE", nick, message);
 					}
 				}
-				else 
+				else
 				{
 					ClearBuffer();
 					throw new ArgumentException(nick + " is not a valid nickname.");
@@ -740,22 +740,22 @@ namespace Sharkbite.Irc
 		/// <param name="channel">The target channel.</param>
 		/// <param name="message">A message. If the message is too long it will be broken
 		/// up into smaller piecese which will be sent sequentially.</param>
-		/// <exception cref="ArgumentException">If the channel name is not valid or if the message is null.</exception> 
-		/// <seealso cref="Listener.OnPublic"/> 
-		public void PublicMessage(string channel, string message) 
+		/// <exception cref="ArgumentException">If the channel name is not valid or if the message is null.</exception>
+		/// <seealso cref="Listener.OnPublic"/>
+		public void PublicMessage(string channel, string message)
 		{
 			lock( this )
 			{
-				if ( IsEmpty( message ) ) 
+				if ( IsEmpty( message ) )
 				{
 					ClearBuffer();
 					throw new ArgumentException("Public message cannot be null or empty.");
 				}
-				if (Rfc2812Util.IsValidChannelName(channel)) 
+				if (Rfc2812Util.IsValidChannelName(channel))
 				{
 					// 11 is PRIVMSG + 2 x Spaces + : + CR + LF
 					int max = MAX_COMMAND_SIZE - 11 - channel.Length;
-					if (message.Length > max) 
+					if (message.Length > max)
 					{
 						string[] parts = BreakUpMessage( message, max );
 						foreach( string part in parts )
@@ -763,12 +763,12 @@ namespace Sharkbite.Irc
 							SendMessage("PRIVMSG", channel, part );
 						}
 					}
-					else 
+					else
 					{
 						SendMessage("PRIVMSG", channel, message);
 					}
 				}
-				else 
+				else
 				{
 					ClearBuffer();
 					throw new ArgumentException(channel + " is not a valid channel name.");
@@ -791,22 +791,22 @@ namespace Sharkbite.Irc
 		/// <param name="nick">The target user.</param>
 		/// <param name="message">A message. If the message is too long it will be broken
 		/// up into smaller piecese which will be sent sequentially.</param>
-		/// <exception cref="ArgumentException">If the nickname is not valid or if the message is null or empty.</exception> 
-		/// <seealso cref="Listener.OnPrivate"/> 
-		public void PrivateMessage(string nick, string message) 
+		/// <exception cref="ArgumentException">If the nickname is not valid or if the message is null or empty.</exception>
+		/// <seealso cref="Listener.OnPrivate"/>
+		public void PrivateMessage(string nick, string message)
 		{
 			lock( this )
 			{
-				if ( IsEmpty( message ) ) 
+				if ( IsEmpty( message ) )
 				{
 					ClearBuffer();
 					throw new ArgumentException("Private message cannot be null or empty.");
 				}
-				if (Rfc2812Util.IsValidNick(nick)) 
+				if (Rfc2812Util.IsValidNick(nick))
 				{
 					// 11 is PRIVMSG + 2 x Spaces + : + CR + LF
 					int max = MAX_COMMAND_SIZE - 11 - nick.Length;
-					if (message.Length > max) 
+					if (message.Length > max)
 					{
 						string[] parts = BreakUpMessage( message, max );
 						foreach( string part in parts )
@@ -814,12 +814,12 @@ namespace Sharkbite.Irc
 							SendMessage("PRIVMSG", nick, part );
 						}
 					}
-					else 
+					else
 					{
 						SendMessage("PRIVMSG", nick, message);
 					}
 				}
-				else 
+				else
 				{
 					ClearBuffer();
 					throw new ArgumentException(nick + " is not a valid nickname.");
@@ -835,16 +835,16 @@ namespace Sharkbite.Irc
 		/// channel. However, if the channel exists, only members of the channel
 		/// are allowed to invite other users. When the channel has invite-only
 		/// flag set, only channel operators may an invite.</para>
-		/// 
+		///
 		/// <para>Only the user inviting and the user being invited will receive
 		/// notification of the invitation. Other channel members are not
 		/// notified. (This is unlike the mode changes, and is occasionally the
 		/// source of trouble for users.)</para>
-		/// 
-		/// <para>After the invite is sent the IRC server will signal that it 
+		///
+		/// <para>After the invite is sent the IRC server will signal that it
 		/// was correctly received by calling <see cref="Listener.OnInviteSent"/>.
 		/// </para>
-		/// 
+		///
 		/// Possible Errors
 		/// <list type="bullet">
 		/// 		<item><description>ERR_NEEDMOREPARAMS</description></item>
@@ -856,19 +856,19 @@ namespace Sharkbite.Irc
 		/// </remarks>
 		/// <param name="who">The nick of the person to invite</param>
 		/// <param name="channel">The channel they are invited to join.</param>
-		/// <exception cref="ArgumentException">If the nickname or channel is not valid.</exception> 
-		/// <seealso cref="Listener.OnInviteSent"/> 
-		/// <seealso cref="Listener.OnInvite"/> 
-		public void Invite(string who, string channel) 
+		/// <exception cref="ArgumentException">If the nickname or channel is not valid.</exception>
+		/// <seealso cref="Listener.OnInviteSent"/>
+		/// <seealso cref="Listener.OnInvite"/>
+		public void Invite(string who, string channel)
 		{
 			lock( this )
 			{
-				if (!Rfc2812Util.IsValidNick(who)) 
+				if (!Rfc2812Util.IsValidNick(who))
 				{
 					ClearBuffer();
 					throw new ArgumentException(who + " is not a valid nickname.");
 				}
-				if (!Rfc2812Util.IsValidChannelName(channel)) 
+				if (!Rfc2812Util.IsValidChannelName(channel))
 				{
 					ClearBuffer();
 					throw new ArgumentException(channel + " is not a valid channel.");
@@ -902,23 +902,23 @@ namespace Sharkbite.Irc
 		/// //Kicks several users at once
 		/// connection.Sender.Kick( "#thresher", "Bye", "John","Dick","Harry" );
 		/// </code></example>
-		/// <exception cref="ArgumentException">If the nickname or channel is not valid or the reason is null.</exception> 
-		/// <seealso cref="Listener.OnKick"/> 
-		public void Kick(string channel, string reason, params string[] nicks) 
+		/// <exception cref="ArgumentException">If the nickname or channel is not valid or the reason is null.</exception>
+		/// <seealso cref="Listener.OnKick"/>
+		public void Kick(string channel, string reason, params string[] nicks)
 		{
 			lock( this )
 			{
-				if (!Rfc2812Util.IsValidNicklList( nicks)) 
+				if (!Rfc2812Util.IsValidNicklList( nicks))
 				{
 					ClearBuffer();
 					throw new ArgumentException("One of the nicknames is invalid.");
 				}
-				if (!Rfc2812Util.IsValidChannelName(channel)) 
+				if (!Rfc2812Util.IsValidChannelName(channel))
 				{
 					ClearBuffer();
 					throw new ArgumentException(channel + " is not a valid channel.");
 				}
-				if ( IsEmpty( reason ) ) 
+				if ( IsEmpty( reason ) )
 				{
 					ClearBuffer();
 					throw new ArgumentException("The reason for kicking cannot be null.");
@@ -949,13 +949,13 @@ namespace Sharkbite.Irc
 		/// //Query for a nick
 		/// connection.Sender.Ison( "joe" );
 		/// </code></example>
-		/// <exception cref="ArgumentException">If the nickname is not valid.</exception> 
-		/// <seealso cref="Listener.OnIson"/> 
-		public void Ison( string nick ) 
+		/// <exception cref="ArgumentException">If the nickname is not valid.</exception>
+		/// <seealso cref="Listener.OnIson"/>
+		public void Ison( string nick )
 		{
 			lock( this )
 			{
-				if (!Rfc2812Util.IsValidNick(nick)) 
+				if (!Rfc2812Util.IsValidNick(nick))
 				{
 					ClearBuffer();
 					throw new ArgumentException( nick + " is not a valid nick.");
@@ -974,7 +974,7 @@ namespace Sharkbite.Irc
 		/// 		<item><description>ERR_TOOMANYLINES</description></item>
 		/// </list>
 		/// </remarks>
-		/// <param name="mask">The mask passed to Who is matched against a users' host, 
+		/// <param name="mask">The mask passed to Who is matched against a users' host,
 		/// real name or nickname. It uses the wildcard system of matching
 		/// where the '*' can stand for any number of characters and '?' stands for any single
 		/// character. The query will only match against one component so it is not possible
@@ -988,16 +988,16 @@ namespace Sharkbite.Irc
 		/// //Find all users from clan [DX], i.e. have '[DX]' in their nick
 		/// connection.Sender.Who("[DX]*", false );
 		/// </code></example>
-		/// <exception cref="ArgumentException">If the mask is null,empty, or too long.</exception> 
-		/// <seealso cref="Listener.OnWho"/> 
-		public void Who( string mask, bool operatorsOnly ) 
+		/// <exception cref="ArgumentException">If the mask is null,empty, or too long.</exception>
+		/// <seealso cref="Listener.OnWho"/>
+		public void Who( string mask, bool operatorsOnly )
 		{
 			lock( this )
 			{
 				//7 is WHO + Space +O + CR + LF
 				int max = MAX_COMMAND_SIZE - 7;
 				if( IsEmpty( mask) ||
-					mask.Length > max ) 
+					mask.Length > max )
 				{
 					ClearBuffer();
 					throw new ArgumentException("Who mask is invalid.");
@@ -1005,7 +1005,7 @@ namespace Sharkbite.Irc
 				Buffer.Append("WHO");
 				Buffer.Append(SPACE);
 				Buffer.Append(mask);
-				if( operatorsOnly ) 
+				if( operatorsOnly )
 				{
 					Buffer.Append( SPACE ) ;
 					Buffer.Append("o");
@@ -1014,12 +1014,12 @@ namespace Sharkbite.Irc
 			}
 		}
 		/// <summary>
-		/// Request a list all visible users (whose mode is not +i) and those 
-		/// who don't have a common channel with the requesting 
-		/// client are listed. 
+		/// Request a list all visible users (whose mode is not +i) and those
+		/// who don't have a common channel with the requesting
+		/// client are listed.
 		/// </summary>
-		/// <seealso cref="Listener.OnWho"/> 
-		public void AllWho() 
+		/// <seealso cref="Listener.OnWho"/>
+		public void AllWho()
 		{
 			lock( this )
 			{
@@ -1037,14 +1037,14 @@ namespace Sharkbite.Irc
 		/// 		</list>
 		/// </remarks>
 		/// <param name="nick">The nick of the query subject.</param>
-		/// <exception cref="ArgumentException">If the nick is invalid.</exception> 
-		/// <seealso cref="Listener.OnWhois"/> 
-		/// <seealso cref="WhoisInfo"/> 
+		/// <exception cref="ArgumentException">If the nick is invalid.</exception>
+		/// <seealso cref="Listener.OnWhois"/>
+		/// <seealso cref="WhoisInfo"/>
 		public void Whois( string nick )
 		{
 			lock( this )
 			{
-				if (!Rfc2812Util.IsValidNick(nick)) 
+				if (!Rfc2812Util.IsValidNick(nick))
 				{
 					ClearBuffer();
 					throw new ArgumentException(nick + " is not a valid nickname.");
@@ -1056,7 +1056,7 @@ namespace Sharkbite.Irc
 			}
 		}
 		/// <summary>
-		/// Set the user status to away and set an automatic reply 
+		/// Set the user status to away and set an automatic reply
 		/// to any private message.
 		/// </summary>
 		/// <remarks>
@@ -1065,13 +1065,13 @@ namespace Sharkbite.Irc
 		/// </remarks>
 		/// <param name="message">The message that will be sent back to others when you
 		/// are away. Overly long message will be truncated.</param>
-		/// <exception cref="ArgumentException">If the message is null or empty.</exception> 
-		/// <seealso cref="Listener.OnAway"/> 
-		public void Away( string message) 
+		/// <exception cref="ArgumentException">If the message is null or empty.</exception>
+		/// <seealso cref="Listener.OnAway"/>
+		public void Away( string message)
 		{
-			lock( this ) 
+			lock( this )
 			{
-				if ( IsEmpty( message ) ) 
+				if ( IsEmpty( message ) )
 				{
 					ClearBuffer();
 					throw new ArgumentException("Away message cannot be empty or null.");
@@ -1087,9 +1087,9 @@ namespace Sharkbite.Irc
 		/// <summary>
 		/// Turns off the away status and the accompanying message.
 		/// </summary>
-		public void UnAway() 
+		public void UnAway()
 		{
-			lock( this ) 
+			lock( this )
 			{
 				Buffer.Append("AWAY");
 				Connection.SendCommand( Buffer );
@@ -1106,13 +1106,13 @@ namespace Sharkbite.Irc
 		/// 		</list>
 		/// </remarks>
 		/// <param name="nick">Target nick</param>
-		/// <exception cref="ArgumentException">If the nick is invalid.</exception> 
-		/// <seealso cref="Listener.OnWhowas"/> 
+		/// <exception cref="ArgumentException">If the nick is invalid.</exception>
+		/// <seealso cref="Listener.OnWhowas"/>
 		public void Whowas( string nick )
 		{
-			lock( this ) 
+			lock( this )
 			{
-				if (!Rfc2812Util.IsValidNick(nick)) 
+				if (!Rfc2812Util.IsValidNick(nick))
 				{
 					ClearBuffer();
 					throw new ArgumentException(nick + " is not a valid nickname.");
@@ -1137,19 +1137,19 @@ namespace Sharkbite.Irc
 		/// <param name="count">The maximum number of replies the IRC server
 		/// should send back.</param>
 		/// <param name="nick">Target nick</param>
-		/// <exception cref="ArgumentException">If the nick is invalid or if count is less 
-		/// than or equal to zero.</exception> 
-		/// <seealso cref="Listener.OnWhowas"/> 
+		/// <exception cref="ArgumentException">If the nick is invalid or if count is less
+		/// than or equal to zero.</exception>
+		/// <seealso cref="Listener.OnWhowas"/>
 		public void Whowas( string nick, int count )
 		{
-			lock( this ) 
+			lock( this )
 			{
-				if (!Rfc2812Util.IsValidNick(nick)) 
+				if (!Rfc2812Util.IsValidNick(nick))
 				{
 					ClearBuffer();
 					throw new ArgumentException(nick + " is not a valid nickname.");
 				}
-				if( count < 1 ) 
+				if( count < 1 )
 				{
 					ClearBuffer();
 					throw new ArgumentException("Count must be more than zero.");
@@ -1167,9 +1167,9 @@ namespace Sharkbite.Irc
 		/// </summary>
 		/// <seealso cref="Listener.OnUserModeRequest"/>
 		/// <seealso cref="UserMode"/>
-		public void RequestUserModes() 
+		public void RequestUserModes()
 		{
-			lock( this ) 
+			lock( this )
 			{
 				Buffer.Append("MODE");
 				Buffer.Append( SPACE );
@@ -1180,7 +1180,7 @@ namespace Sharkbite.Irc
 		/// <summary>Changes this client's mode. To change another nick's mode
 		/// use <see cref="ChangeChannelMode"/>.</summary>
 		/// <remarks>
-		/// Away cannot be set here but should be set using <see cref="Sender.Away"/> 
+		/// Away cannot be set here but should be set using <see cref="Sender.Away"/>
 		/// or removed using <see cref="Sender.UnAway"/>.
 		/// </remarks>
 		/// <param name="action">Add or remove a mode.</param>
@@ -1191,13 +1191,13 @@ namespace Sharkbite.Irc
 		/// //Turn on wallops (and get a lot of IRC garbage)
 		/// connection.Sender.ChangeUserMode( ModeAction.Add, UserMode.Wallops );
 		/// </code></example>
-		/// <exception cref="ArgumentException">If the UserMode parameter is Away.</exception> 
+		/// <exception cref="ArgumentException">If the UserMode parameter is Away.</exception>
 		/// <seealso cref="Listener.OnUserModeChange"/>
-		public void ChangeUserMode( ModeAction action, UserMode mode ) 
+		public void ChangeUserMode( ModeAction action, UserMode mode )
 		{
-			lock( this ) 
+			lock( this )
 			{
-				if ( mode == UserMode.Away ) 
+				if ( mode == UserMode.Away )
 				{
 					ClearBuffer();
 					throw new ArgumentException("Away mode can only be changed with the Away and Unaway commands.");
@@ -1228,7 +1228,7 @@ namespace Sharkbite.Irc
 		/// <param name="channel">The target channel.</param>
 		/// <param name="action">Add or remove.</param>
 		/// <param name="mode">The target mode.</param>
-		/// <param name="param">An optional parameter for certain modes. If the mode 
+		/// <param name="param">An optional parameter for certain modes. If the mode
 		/// does not require one this should be null.</param>
 		/// <example><code>
 		/// //Give 'nick' the ability to talk on a moderated channel, i.e. add Voice
@@ -1236,13 +1236,13 @@ namespace Sharkbite.Irc
 		/// //Make a channel private
 		/// connection.Sender.ChangeChannelMode( "#thresher", ModeAction.Add, ChannelMode.Private, null );
 		/// </code></example>
-		/// <exception cref="ArgumentException">If the channel name is invalid.</exception> 
+		/// <exception cref="ArgumentException">If the channel name is invalid.</exception>
 		/// <seealso cref="Listener.OnChannelModeChange"/>
-		public void ChangeChannelMode( string channel, ModeAction action, ChannelMode mode, string param ) 
+		public void ChangeChannelMode( string channel, ModeAction action, ChannelMode mode, string param )
 		{
 			lock( this )
 			{
-				if (!Rfc2812Util.IsValidChannelName(channel)) 
+				if (!Rfc2812Util.IsValidChannelName(channel))
 				{
 					ClearBuffer();
 					throw new ArgumentException(channel + " is not a valid channel.");
@@ -1253,7 +1253,7 @@ namespace Sharkbite.Irc
 				Buffer.Append(SPACE);
 				Buffer.Append( Rfc2812Util.ModeActionToChar( action ) );
 				Buffer.Append( Rfc2812Util.ChannelModeToChar( mode ) );
-				if( !IsEmpty( param ) ) 
+				if( !IsEmpty( param ) )
 				{
 					Buffer.Append(SPACE);
 					Buffer.Append( param );
@@ -1262,7 +1262,7 @@ namespace Sharkbite.Irc
 			}
 		}
 		/// <summary>
-		/// Request the list of users that a channel keeps for the given mode.. 
+		/// Request the list of users that a channel keeps for the given mode..
 		/// </summary>
 		/// <remarks>
 		/// Each channel maintains a list of those banned, those excepted from a ban,
@@ -1278,13 +1278,13 @@ namespace Sharkbite.Irc
 		/// connection.Sender.RequestChannelList("#thresher", ChannelMode.Ban );
 		/// </code></example>
 		/// <exception cref="ArgumentException">If the channel is invalid or the ChannelMode is
-		/// not one of the 4 allowed types.</exception> 
+		/// not one of the 4 allowed types.</exception>
 		/// <seealso cref="Listener.OnChannelList"/>
-		public void RequestChannelList( string channel, ChannelMode mode ) 
+		public void RequestChannelList( string channel, ChannelMode mode )
 		{
 			lock( this )
 			{
-				if (!Rfc2812Util.IsValidChannelName(channel)) 
+				if (!Rfc2812Util.IsValidChannelName(channel))
 				{
 					ClearBuffer();
 					throw new ArgumentException(channel + " is not a valid channel.");
@@ -1292,7 +1292,7 @@ namespace Sharkbite.Irc
 				if( mode != ChannelMode.Ban &&
 					mode != ChannelMode.Exception &&
 					mode != ChannelMode.Invitation &&
-					mode != ChannelMode.ChannelCreator ) 
+					mode != ChannelMode.ChannelCreator )
 				{
 					ClearBuffer();
 					throw new ArgumentException( Enum.GetName( typeof(ChannelMode), mode ) + " is not a valid channel mode for this request.");
@@ -1309,13 +1309,13 @@ namespace Sharkbite.Irc
 		/// Request the modes of a channel.
 		/// </summary>
 		/// <param name="channel">The target channel.</param>
-		/// <exception cref="ArgumentException">If the channel is invalid, null, or empty.</exception> 
+		/// <exception cref="ArgumentException">If the channel is invalid, null, or empty.</exception>
 		/// <seealso cref="Listener.OnChannelModeRequest"/>
-		public void RequestChannelModes( string channel ) 
+		public void RequestChannelModes( string channel )
 		{
 			lock( this )
 			{
-				if (!Rfc2812Util.IsValidChannelName(channel)) 
+				if (!Rfc2812Util.IsValidChannelName(channel))
 				{
 					ClearBuffer();
 					throw new ArgumentException(channel + " is not a valid channel.");
@@ -1331,7 +1331,7 @@ namespace Sharkbite.Irc
 		/// </summary>
 		/// <remarks>
 		/// This is actually a CTCP command but it is so widely used
-		/// that it is included here. These are the '\me Laughs' type messages. 
+		/// that it is included here. These are the '\me Laughs' type messages.
 		/// </remarks>
 		/// <param name="channel">The target channel.</param>
 		/// <param name="description">A description of the action. If this is too long it will
@@ -1341,24 +1341,24 @@ namespace Sharkbite.Irc
 		/// connection.Sender.Action("#thresher", "Kicks down the door" );
 		/// </code></example>
 		/// <exception cref="ArgumentException">If the channel name is not valid. Will
-		/// also be thrown if the description is null or empty.</exception> 
+		/// also be thrown if the description is null or empty.</exception>
 		/// <seealso cref="Listener.OnAction"/>
-		public void Action(string channel, string description ) 
+		public void Action(string channel, string description )
 		{
 			lock( this )
 			{
-				if (IsEmpty( description ) ) 
+				if (IsEmpty( description ) )
 				{
 					ClearBuffer();
 					throw new ArgumentException("Action description cannot be null or empty.");
 				}
-				if (Rfc2812Util.IsValidChannelName(channel)) 
+				if (Rfc2812Util.IsValidChannelName(channel))
 				{
 					// 19 is PRIVMSG + 2 x Spaces + : + CR + LF + 2xCtcpQuote + ACTION
 					description = Truncate( description, 19 + channel.Length) ;
 					SendMessage("PRIVMSG", channel, CtcpQuote + "ACTION " + description + CtcpQuote );
 				}
-				else 
+				else
 				{
 					ClearBuffer();
 					throw new ArgumentException(channel + " is not a valid channel name.");
@@ -1374,22 +1374,22 @@ namespace Sharkbite.Irc
 		/// <exception cref="ArgumentException">If the nickname is not valid. Will
 		/// also be thrown if the description is null or empty.</exception>
 		/// <seealso cref="Listener.OnPrivateAction"/>
-		public void PrivateAction(string nick, string description ) 
+		public void PrivateAction(string nick, string description )
 		{
 			lock( this )
 			{
-				if ( IsEmpty( description) ) 
+				if ( IsEmpty( description) )
 				{
 					ClearBuffer();
 					throw new ArgumentException("Action description cannot be null or empty.");
 				}
-				if (Rfc2812Util.IsValidNick(nick)) 
+				if (Rfc2812Util.IsValidNick(nick))
 				{
 					// 19 is PRIVMSG + 2 x Spaces + : + CR + LF + 2xCtcpQuote + ACTION
 					description = Truncate( description, 19 + nick.Length );
 					SendMessage("PRIVMSG", nick, CtcpQuote + "ACTION " + description + CtcpQuote );
 				}
-				else 
+				else
 				{
 					ClearBuffer();
 					throw new ArgumentException(nick + " is not a valid nickname.");
@@ -1408,7 +1408,7 @@ namespace Sharkbite.Irc
 		/// </remarks>
 		/// <param name="newNick">The changed nick name.</param>
 		/// <seealso cref="NameGenerator"/>
-		public void Register( string newNick ) 
+		public void Register( string newNick )
 		{
 			Connection.connectionArgs.Nick = newNick;
 			Nick( Connection.connectionArgs.Nick );
@@ -1418,22 +1418,22 @@ namespace Sharkbite.Irc
 		/// Send an arbitrary text message to the IRC server.
 		/// </summary>
 		/// <remarks>
-		/// Messages that are too long will be truncated. There is no corresponding 
+		/// Messages that are too long will be truncated. There is no corresponding
 		/// events so it will be necessary to check for standard reply codes and possibly
 		/// errors.
 		/// </remarks>
 		/// <param name="message">A text message.</param>
-		/// <exception cref="ArgumentException">If the message is null or empty.</exception> 
-		public void Raw( string message ) 
+		/// <exception cref="ArgumentException">If the message is null or empty.</exception>
+		public void Raw( string message )
 		{
 			lock( this )
 			{
-				if ( IsEmpty( message ) ) 
+				if ( IsEmpty( message ) )
 				{
 					ClearBuffer();
 					throw new ArgumentException("Message cannot be null or empty.");
 				}
-				if (message.Length > MAX_COMMAND_SIZE ) 
+				if (message.Length > MAX_COMMAND_SIZE )
 				{
 					message = message.Substring( 0, MAX_COMMAND_SIZE );
 				}
@@ -1451,7 +1451,7 @@ namespace Sharkbite.Irc
 		/// 		</list>
 		/// </remarks>
 		/// <seealso cref="Listener.OnVersion"/>
-		public void Version() 
+		public void Version()
 		{
 			Version( null );
 		}
@@ -1467,19 +1467,19 @@ namespace Sharkbite.Irc
 		/// <param name="targetServer">The FQDN of the IRC server to query. Wildcards are allowed.
 		/// Must be a server part of the same IRC network this connection is connected to.</param>
 		/// <seealso cref="Listener.OnVersion"/>
-		public void Version( string targetServer ) 
+		public void Version( string targetServer )
 		{
 			lock( this )
 			{
 				Buffer.Append("VERSION");
-				if ( !IsEmpty(targetServer) ) 
+				if ( !IsEmpty(targetServer) )
 				{
-					//10 is VERSION + 1 x Spaces + CR + LF 
+					//10 is VERSION + 1 x Spaces + CR + LF
 					targetServer = Truncate( targetServer, 10);
 					Buffer.Append( SPACE );
 					Buffer.Append( targetServer );
 				}
-				Connection.SendCommand( Buffer );				
+				Connection.SendCommand( Buffer );
 			}
 		}
 		/// <summary>
@@ -1492,7 +1492,7 @@ namespace Sharkbite.Irc
 		/// 		</list>
 		/// </remarks>
 		/// <seealso cref="Listener.OnMotd"/>
-		public void Motd() 
+		public void Motd()
 		{
 			Motd( null );
 		}
@@ -1508,26 +1508,26 @@ namespace Sharkbite.Irc
 		/// <param name="targetServer">The FQDN of the IRC server to query. Wildcards are allowed.
 		/// Must be a server part of the same IRC network this connection is connected to.</param>
 		/// <seealso cref="Listener.OnMotd"/>
-		public void Motd( string targetServer ) 
+		public void Motd( string targetServer )
 		{
 			lock( this )
 			{
 				Buffer.Append("MOTD");
-				if ( !IsEmpty(targetServer) ) 
+				if ( !IsEmpty(targetServer) )
 				{
-					//7 is MOTD + 1 x Spaces + CR + LF 
+					//7 is MOTD + 1 x Spaces + CR + LF
 					targetServer = Truncate( targetServer, 7);
 					Buffer.Append( SPACE );
 					Buffer.Append( targetServer );
 				}
-				Connection.SendCommand( Buffer );				
+				Connection.SendCommand( Buffer );
 			}
 		}
 		/// <summary>
 		/// Request the local time from the current server.
 		/// </summary>
 		/// <seealso cref="Listener.OnTime"/>
-		public void Time() 
+		public void Time()
 		{
 			Time( null );
 		}
@@ -1543,19 +1543,19 @@ namespace Sharkbite.Irc
 		/// <param name="targetServer">The FQDN of the IRC server to query. Wildcards are allowed.
 		/// Must be a server part of the same IRC network this connection is connected to.</param>
 		/// <seealso cref="Listener.OnTime"/>
-		public void Time( string targetServer ) 
+		public void Time( string targetServer )
 		{
 			lock( this )
 			{
 				Buffer.Append("TIME");
-				if ( !IsEmpty(targetServer) ) 
+				if ( !IsEmpty(targetServer) )
 				{
-					//8 is TIME + 1 x Spaces + CR + LF 
+					//8 is TIME + 1 x Spaces + CR + LF
 					targetServer = Truncate( targetServer, 8);
 					Buffer.Append( SPACE );
 					Buffer.Append( targetServer );
 				}
-				Connection.SendCommand( Buffer );				
+				Connection.SendCommand( Buffer );
 			}
 		}
 		/// <summary>
@@ -1566,11 +1566,11 @@ namespace Sharkbite.Irc
 		/// </remarks>
 		/// <param name="message">Any text message.</param>
 		/// <exception cref="ArgumentException">If the message is empty or null.</exception>
-		public void Wallops( string message ) 
+		public void Wallops( string message )
 		{
 			lock( this )
 			{
-				if ( IsEmpty( message ) ) 
+				if ( IsEmpty( message ) )
 				{
 					ClearBuffer();
 					throw new ArgumentException("Wallops message cannot be null or empty.");
@@ -1580,7 +1580,7 @@ namespace Sharkbite.Irc
 				message = Truncate( message, 10 );
 				Buffer.Append( SPACE );
 				Buffer.Append( message );
-				Connection.SendCommand( Buffer );				
+				Connection.SendCommand( Buffer );
 			}
 		}
 		/// <summary>
@@ -1594,7 +1594,7 @@ namespace Sharkbite.Irc
 		/// 	considered relevant.
 		/// </remarks>
 		/// <seealso cref="Listener.OnInfo"/>
-		public void Info() 
+		public void Info()
 		{
 			Info( null );
 		}
@@ -1607,7 +1607,7 @@ namespace Sharkbite.Irc
 		/// server: its version, when it was compiled, the patchlevel, when it
 		/// was started, and any other miscellaneous information which may be
 		/// 	considered relevant.</para>
-		/// 	
+		///
 		/// Possible Errors
 		/// 		<list type="bullet">
 		/// 			<item><description>ERR_NOSUCHSERVER</description></item>
@@ -1623,19 +1623,19 @@ namespace Sharkbite.Irc
 		/// connection.Sender.Info("Bob");
 		/// </code></example>
 		/// <seealso cref="Listener.OnInfo"/>
-		public void Info( string target ) 
+		public void Info( string target )
 		{
 			lock( this )
 			{
 				Buffer.Append("INFO");
-				if ( !IsEmpty(target) ) 
+				if ( !IsEmpty(target) )
 				{
-					//7 is INFO + 1 x Spaces + CR + LF 
+					//7 is INFO + 1 x Spaces + CR + LF
 					target = Truncate( target, 7);
 					Buffer.Append( SPACE );
 					Buffer.Append( target );
 				}
-				Connection.SendCommand( Buffer );				
+				Connection.SendCommand( Buffer );
 			}
 		}
 		/// <summary>
@@ -1648,7 +1648,7 @@ namespace Sharkbite.Irc
 		/// the IRC is configured to send as a response.
 		/// </remarks>
 		/// <seealso cref="Listener.OnAdmin"/>
-		public void Admin() 
+		public void Admin()
 		{
 			Admin( null );
 		}
@@ -1661,7 +1661,7 @@ namespace Sharkbite.Irc
 		/// email address, geographical location and whatever else
 		/// the IRC is configured to send as a response.
 		/// </para>
-		/// 	
+		///
 		/// Possible Errors
 		/// 		<list type="bullet">
 		/// 			<item><description>ERR_NOSUCHSERVER</description></item>
@@ -1677,22 +1677,22 @@ namespace Sharkbite.Irc
 		/// connection.Sender.Admin("Bob");
 		/// </code></example>
 		/// <seealso cref="Listener.OnAdmin"/>
-		public void Admin( string target ) 
+		public void Admin( string target )
 		{
 			lock( this )
 			{
 				Buffer.Append("ADMIN");
-				if ( !IsEmpty(target) ) 
+				if ( !IsEmpty(target) )
 				{
-					//8 is INFO + 1 x Spaces + CR + LF 
+					//8 is INFO + 1 x Spaces + CR + LF
 					target = Truncate( target, 8);
 					Buffer.Append( SPACE );
 					Buffer.Append( target );
 				}
-				Connection.SendCommand( Buffer );				
+				Connection.SendCommand( Buffer );
 			}
 		}
-		
+
 		/// <summary>
 		/// Request statistics about the size of the IRC network.
 		/// </summary>
@@ -1703,7 +1703,7 @@ namespace Sharkbite.Irc
 		/// 		</list>
 		/// </remarks>
 		/// <seealso cref="Listener.OnLusers"/>
-		public void Lusers() 
+		public void Lusers()
 		{
 			Lusers( null, null );
 		}
@@ -1731,29 +1731,29 @@ namespace Sharkbite.Irc
 		/// </code></example>
 		/// <exception cref="ArgumentException">If the host mask and server names are too long.</exception>
 		/// <seealso cref="Listener.OnLusers"/>
-		public void Lusers( string hostMask, string targetServer ) 
+		public void Lusers( string hostMask, string targetServer )
 		{
 			lock( this )
 			{
 				Buffer.Append("LUSERS");
-				if ( !IsEmpty(hostMask) ) 
+				if ( !IsEmpty(hostMask) )
 				{
 					Buffer.Append( SPACE );
 					Buffer.Append( hostMask );
 				}
-				if( !IsEmpty(targetServer) ) 
+				if( !IsEmpty(targetServer) )
 				{
 					Buffer.Append( SPACE );
 					Buffer.Append( targetServer );
 				}
-				
-				if( TooLong( Buffer ) ) 
+
+				if( TooLong( Buffer ) )
 				{
 					ClearBuffer();
 					throw new ArgumentException("Hostmask and TargetServer are too long.");
 				}
-				
-				Connection.SendCommand( Buffer );				
+
+				Connection.SendCommand( Buffer );
 			}
 		}
 
@@ -1767,7 +1767,7 @@ namespace Sharkbite.Irc
 		/// 		</list>
 		/// </remarks>
 		/// <seealso cref="Listener.OnLinks"/>
-		public void Links() 
+		public void Links()
 		{
 			Links( null );
 		}
@@ -1795,29 +1795,29 @@ namespace Sharkbite.Irc
 		/// </code></example>
 		/// <exception cref="ArgumentException">If the masks are too long.</exception>
 		/// <seealso cref="Listener.OnLinks"/>
-		public void Links( params string[] masks ) 
+		public void Links( params string[] masks )
 		{
 			lock( this )
 			{
 				Buffer.Append("LINKS");
-				if( masks != null ) 
+				if( masks != null )
 				{
 					Buffer.Append( SPACE );
 					Buffer.Append(  masks[0] );
-	
-					if( masks.Length >= 2 ) 
+
+					if( masks.Length >= 2 )
 					{
 						Buffer.Append( SPACE );
 						Buffer.Append(  masks[1] );
 					}
 				}
-				
-				if( TooLong( Buffer ) ) 
+
+				if( TooLong( Buffer ) )
 				{
 					ClearBuffer();
 					throw new ArgumentException("Masks are too long.");
 				}
-				Connection.SendCommand( Buffer );				
+				Connection.SendCommand( Buffer );
 			}
 		}
 
@@ -1837,7 +1837,7 @@ namespace Sharkbite.Irc
 		/// connection.Sender.Stats( StatsQuery.Connections );
 		/// </code></example>
 		/// <seealso cref="Listener.OnStats"/>
-		public void Stats( StatsQuery query ) 
+		public void Stats( StatsQuery query )
 		{
 			Stats( query, null );
 		}
@@ -1859,24 +1859,24 @@ namespace Sharkbite.Irc
 		/// </code></example>
 		/// <exception cref="ArgumentException">If the target server name is too long.</exception>
 		/// <seealso cref="Listener.OnStats"/>
-		public void Stats( StatsQuery query, string targetServer ) 
+		public void Stats( StatsQuery query, string targetServer )
 		{
 			lock( this )
 			{
 				Buffer.Append("STATS");
 				Buffer.Append( SPACE );
 				Buffer.Append( Rfc2812Util.StatsQueryToChar( query ) );
-				if( targetServer != null ) 
+				if( targetServer != null )
 				{
 					Buffer.Append( SPACE );
-					Buffer.Append( targetServer );	
+					Buffer.Append( targetServer );
 				}
-				if( TooLong( Buffer ) ) 
+				if( TooLong( Buffer ) )
 				{
 					ClearBuffer();
 					throw new ArgumentException("Target server name is too long.");
 				}
-				Connection.SendCommand( Buffer );				
+				Connection.SendCommand( Buffer );
 			}
 		}
 
@@ -1895,23 +1895,23 @@ namespace Sharkbite.Irc
 		/// </remarks>
 		/// <param name="nick">User to kill</param>
 		/// <param name="reason">The reason for disconnecting the user.</param>
-		/// <exception cref="ArgumentException">If the nick is not valid or the reason is null.</exception> 
+		/// <exception cref="ArgumentException">If the nick is not valid or the reason is null.</exception>
 		/// <seealso cref="Listener.OnKill"/>
-		public void Kill(string nick, string reason) 
+		public void Kill(string nick, string reason)
 		{
-			lock( this ) 
+			lock( this )
 			{
-				if ( IsEmpty( nick) ) 
+				if ( IsEmpty( nick) )
 				{
 					ClearBuffer();
 					throw new ArgumentException("Nick cannot be empty or null.");
 				}
-				if ( IsEmpty( reason) ) 
+				if ( IsEmpty( reason) )
 				{
 					ClearBuffer();
 					throw new ArgumentException("Reason cannot be empty or null.");
 				}
-				if (Rfc2812Util.IsValidNick(nick)) 
+				if (Rfc2812Util.IsValidNick(nick))
 				{
 					Buffer.Append("KILL");
 					Buffer.Append(SPACE);
@@ -1920,7 +1920,7 @@ namespace Sharkbite.Irc
 					Buffer.Append( reason );
 					Connection.SendCommand( Buffer );
 				}
-				else 
+				else
 				{
 					ClearBuffer();
 					throw new ArgumentException(nick + " is not a valid nick name.");

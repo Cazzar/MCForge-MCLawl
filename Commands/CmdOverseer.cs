@@ -1,14 +1,14 @@
 /*
 	Copyright 2011 MCForge
-		
+
 	Dual-licensed under the	Educational Community License, Version 2.0 and
 	the GNU General Public License, Version 3 (the "Licenses"); you may
 	not use this file except in compliance with the Licenses. You may
 	obtain a copy of the Licenses at
-	
+
 	http://www.opensource.org/licenses/ecl2.php
 	http://www.gnu.org/licenses/gpl-3.0.html
-	
+
 	Unless required by applicable law or agreed to in writing,
 	software distributed under the Licenses are distributed on an "AS IS"
 	BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
@@ -293,11 +293,11 @@ namespace MCForge.Commands
 		public string properMapName(Player p, bool Ext)
 		{
 			/* Returns the proper name of the User Level. By default the User Level will be named
-			 * "UserName" but was earlier named "UserName00". Therefore the Script checks if the old
-			 * map name exists before trying the new (and correct) name. All Operations will work with
-			 * both map names (UserName and UserName00)
-			 * I need to figure out how to add a system to do this with the players second map.
-			 */
+			* "UserName" but was earlier named "UserName00". Therefore the Script checks if the old
+			* map name exists before trying the new (and correct) name. All Operations will work with
+			* both map names (UserName and UserName00)
+			* I need to figure out how to add a system to do this with the players second map.
+			*/
 			string r = "";
 			if (File.Exists(Directory.GetCurrentDirectory() + "\\levels\\" + p.name.ToLower() + "00.lvl"))
 			{

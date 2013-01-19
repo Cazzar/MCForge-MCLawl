@@ -5,10 +5,10 @@
 	the GNU General Public License, Version 3 (the "Licenses"); you may
 	not use this file except in compliance with the Licenses. You may
 	obtain a copy of the Licenses at
-	
+
 	http://www.opensource.org/licenses/ecl2.php
 	http://www.gnu.org/licenses/gpl-3.0.html
-	
+
 	Unless required by applicable law or agreed to in writing,
 	software distributed under the Licenses are distributed on an "AS IS"
 	BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
@@ -117,7 +117,7 @@ namespace MCForge
 			all.Add(new CmdFreeze());
 			all.Add(new CmdGarbage());
 			all.Add(new CmdGcaccept());
-            all.Add(new CmdGcmods());
+			all.Add(new CmdGcmods());
 			all.Add(new CmdGcrules());
 			all.Add(new CmdGcbanlistupdate());
 			all.Add(new CmdGifToCin());
@@ -171,7 +171,7 @@ namespace MCForge
 			all.Add(new CmdMessageBlock());
 			all.Add(new CmdMissile());
 			all.Add(new CmdMode());
-            all.Add(new CmdMods());
+			all.Add(new CmdMods());
 			all.Add(new CmdModerate());
 			all.Add(new CmdMoney());
 			all.Add(new CmdMove());
@@ -220,7 +220,7 @@ namespace MCForge
 			all.Add(new CmdRagequit());
 			all.Add(new CmdRainbow());
 			all.Add(new CmdRankInfo());
-			all.Add(new CmdRankMsg());            
+			all.Add(new CmdRankMsg());
 			all.Add(new CmdRedo());
 			all.Add(new CmdReload());
 			all.Add(new CmdReferee());
@@ -260,7 +260,7 @@ namespace MCForge
 			all.Add(new CmdSpheroid());
 			all.Add(new CmdSpin());
 			all.Add(new CmdSPlace());
-            all.Add(new CmdStaff());
+			all.Add(new CmdStaff());
 			all.Add(new CmdStairs());
 			all.Add(new CmdStatic());
 			all.Add(new CmdStore());
