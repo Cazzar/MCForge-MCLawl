@@ -13,10 +13,10 @@
 // distribute, sublicense, and/or sell copies of the Software, and to
 // permit persons to whom the Software is furnished to do so, subject to
 // the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be
 // included in all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 // EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 // MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -32,95 +32,95 @@ using System;
 
 namespace MonoTorrent
 {
-    public enum DhtState
-    {
-        NotReady,
-        Initialising,
-        Ready
-    }
+	public enum DhtState
+	{
+		NotReady,
+		Initialising,
+		Ready
+	}
 }
 
 namespace MonoTorrent.Common
 {
-    public enum ListenerStatus
-    {
-        Listening,
-        PortNotFree,
-        NotListening
-    }
+	public enum ListenerStatus
+	{
+		Listening,
+		PortNotFree,
+		NotListening
+	}
 
-    public enum PeerStatus
-    {
-        Available,
-        Connecting,
-        Connected
-    }
+	public enum PeerStatus
+	{
+		Available,
+		Connecting,
+		Connected
+	}
 
-    public enum Direction
-    {
-        None,
-        Incoming,
-        Outgoing
-    }
+	public enum Direction
+	{
+		None,
+		Incoming,
+		Outgoing
+	}
 
-    public enum TorrentState
-    {
-        Stopped,
-        Paused,
-        Downloading,
-        Seeding,
-        Hashing,
-        Stopping,
-        Error,
-        Metadata
-    }
+	public enum TorrentState
+	{
+		Stopped,
+		Paused,
+		Downloading,
+		Seeding,
+		Hashing,
+		Stopping,
+		Error,
+		Metadata
+	}
 
-    public enum Priority
-    {
-        DoNotDownload = 0,
-        Lowest = 1,
-        Low = 2,
-        Normal = 4,
-        High = 8,
-        Highest = 16,
-        Immediate = 32
-    }
+	public enum Priority
+	{
+		DoNotDownload = 0,
+		Lowest = 1,
+		Low = 2,
+		Normal = 4,
+		High = 8,
+		Highest = 16,
+		Immediate = 32
+	}
 
-    public enum TrackerState
-    {
-        Ok,
-        Offline,
-        InvalidResponse
-    }
+	public enum TrackerState
+	{
+		Ok,
+		Offline,
+		InvalidResponse
+	}
 
-    public enum TorrentEvent
-    {
-        None,
-        Started,
-        Stopped,
-        Completed
-    }
+	public enum TorrentEvent
+	{
+		None,
+		Started,
+		Stopped,
+		Completed
+	}
 
-    public enum PeerConnectionEvent
-    {
-        IncomingConnectionReceived,
-        OutgoingConnectionCreated,
-        Disconnected
-    }
+	public enum PeerConnectionEvent
+	{
+		IncomingConnectionReceived,
+		OutgoingConnectionCreated,
+		Disconnected
+	}
 
-    public enum PieceEvent
-    {
-        BlockWriteQueued,
-        BlockNotRequested,
-        BlockWrittenToDisk,
-        HashPassed,
-        HashFailed
-    }
+	public enum PieceEvent
+	{
+		BlockWriteQueued,
+		BlockNotRequested,
+		BlockWrittenToDisk,
+		HashPassed,
+		HashFailed
+	}
 
-    public enum PeerListType
-    {
-        NascentPeers,
-        CandidatePeers,
-        OptimisticUnchokeCandidatePeers
-    }
+	public enum PeerListType
+	{
+		NascentPeers,
+		CandidatePeers,
+		OptimisticUnchokeCandidatePeers
+	}
 }

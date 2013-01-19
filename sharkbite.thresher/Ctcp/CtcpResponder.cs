@@ -1,23 +1,23 @@
 /*
- * Thresher IRC client library
- * Copyright (C) 2002 Aaron Hunter <thresher@sharkbite.org>
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- * 
- * See the gpl.txt file located in the top-level-directory of
- * the archive of this library for complete text of license.
+	* Thresher IRC client library
+	* Copyright (C) 2002 Aaron Hunter <thresher@sharkbite.org>
+	*
+	* This program is free software; you can redistribute it and/or
+	* modify it under the terms of the GNU General Public License
+	* as published by the Free Software Foundation; either version 2
+	* of the License, or (at your option) any later version.
+	*
+	* This program is distributed in the hope that it will be useful,
+	* but WITHOUT ANY WARRANTY; without even the implied warranty of
+	* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+	* GNU General Public License for more details.
+	*
+	* You should have received a copy of the GNU General Public License
+	* along with this program; if not, write to the Free Software
+	* Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+	*
+	* See the gpl.txt file located in the top-level-directory of
+	* the archive of this library for complete text of license.
 */
 
 using System;
@@ -55,12 +55,12 @@ namespace Sharkbite.Irc
 			//Wait at least 2 second in between automatic CTCP responses
 			floodDelay = 2000;
 			//Send back user nick by default for finger requests.
-			userInfoMessage = "Thresher CTCP Responder";		
+			userInfoMessage = "Thresher CTCP Responder";
 			fingerMessage = userInfoMessage;
 			versionMessage = "Thresher IRC library 1.1";
 			sourceMessage = "http://thresher.sourceforge.net";
 			clientInfoMessage = "This client supports: UserInfo, Finger, Version, Source, Ping, Time and ClientInfo";
-			if( connection.EnableCtcp ) 
+			if( connection.EnableCtcp )
 			{
 				connection.CtcpListener.OnCtcpRequest += new CtcpRequestEventHandler( OnCtcpRequest );
 				connection.CtcpListener.OnCtcpPingRequest += new CtcpPingRequestEventHandler( OnCtcpPingRequest );
@@ -73,9 +73,9 @@ namespace Sharkbite.Irc
 		/// time has passed will be droppped.
 		/// </summary>
 		/// <value>The delay in milliseconds. The default is 2000 (2 seconds).</value>
-		public double ResponseDelay 
+		public double ResponseDelay
 		{
-			get 
+			get
 			{
 				return floodDelay;
 			}
@@ -168,7 +168,7 @@ namespace Sharkbite.Irc
 		/// For a TimeSpan to show only hours,minutes, and seconds.
 		/// </summary>
 		/// <returns>A beautified TimeSpan</returns>
-		private string FormatIdleTime() 
+		private string FormatIdleTime()
 		{
 			StringBuilder builder = new StringBuilder();
 			builder.Append( connection.IdleTime.Hours + " Hours, " );
@@ -181,7 +181,7 @@ namespace Sharkbite.Irc
 		/// by Time replies.
 		/// </summary>
 		/// <returns>A beautified DateTime</returns>
-		private string FormatDateTime() 
+		private string FormatDateTime()
 		{
 			DateTime time = DateTime.Now;
 			StringBuilder builder = new StringBuilder();
@@ -195,15 +195,15 @@ namespace Sharkbite.Irc
 		/// of ticks. No Ctcp replies will be sent if the current time is not later
 		/// than this value.
 		/// </summary>
-		private void UpdateTime() 
+		private void UpdateTime()
 		{
 			nextTime = DateTime.Now.ToFileTime() + (long)( floodDelay * TimeSpan.TicksPerMillisecond );
 		}
-		private void OnCtcpRequest( string command, UserInfo who ) 
+		private void OnCtcpRequest( string command, UserInfo who )
 		{
-			if( DateTime.Now.ToFileTime() > nextTime ) 
+			if( DateTime.Now.ToFileTime() > nextTime )
 			{
-				switch( command ) 
+				switch( command )
 				{
 					case CtcpUtil.Finger:
 						connection.CtcpSender.CtcpReply( command, who.Nick, fingerMessage + " Idle time: " + FormatIdleTime() );
@@ -227,23 +227,23 @@ namespace Sharkbite.Irc
 						string error = command + " is not a supported Ctcp query.";
 						connection.CtcpSender.CtcpReply( command, who.Nick, error );
 						break;
+					}
+					UpdateTime();
 				}
-				UpdateTime();
 			}
-		}
-		private void OnCtcpPingRequest( UserInfo who, string timestamp ) 
-		{
-			connection.CtcpSender.CtcpPingReply( who.Nick, timestamp );
-		}
+			private void OnCtcpPingRequest( UserInfo who, string timestamp )
+			{
+				connection.CtcpSender.CtcpPingReply( who.Nick, timestamp );
+			}
 
-		/// <summary>
-		/// Stop listening to the CtcpListener.
-		/// </summary>
-		internal void Disable() 
-		{
-			connection.CtcpListener.OnCtcpRequest -= new CtcpRequestEventHandler( OnCtcpRequest );
-			connection.CtcpListener.OnCtcpPingRequest -= new CtcpPingRequestEventHandler( OnCtcpPingRequest );
-		}
+			/// <summary>
+			/// Stop listening to the CtcpListener.
+			/// </summary>
+			internal void Disable()
+			{
+				connection.CtcpListener.OnCtcpRequest -= new CtcpRequestEventHandler( OnCtcpRequest );
+				connection.CtcpListener.OnCtcpPingRequest -= new CtcpPingRequestEventHandler( OnCtcpPingRequest );
+			}
 
-	}
+		}
 }

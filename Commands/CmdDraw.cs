@@ -1,14 +1,14 @@
-﻿/*
+/*
 	Copyright 2010 MCSharp team (Modified for use with MCZall/MCLawl/MCForge)
-	
+
 	Dual-licensed under the	Educational Community License, Version 2.0 and
 	the GNU General Public License, Version 3 (the "Licenses"); you may
 	not use this file except in compliance with the Licenses. You may
 	obtain a copy of the Licenses at
-	
+
 	http://www.opensource.org/licenses/ecl2.php
 	http://www.gnu.org/licenses/gpl-3.0.html
-	
+
 	Unless required by applicable law or agreed to in writing,
 	software distributed under the Licenses are distributed on an "AS IS"
 	BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
@@ -26,7 +26,7 @@ namespace MCForge.Commands
 		public override string shortcut { get { return ""; } }
 		public override string type { get { return "build"; } }
 		public override bool museumUsable { get { return false; } }
-        public override LevelPermission defaultRank { get { return LevelPermission.Builder; } }
+		public override LevelPermission defaultRank { get { return LevelPermission.Builder; } }
 		public CmdDraw() { }
 
 		public override void Use(Player p, string message)
@@ -46,7 +46,7 @@ namespace MCForge.Commands
 				#region cones
 				if (message2[0].ToLower() == "cone")
 				{
-                    if ((int)p.group.Permission < CommandOtherPerms.GetPerm(this, 1)) { Player.SendMessage(p, "That commands addition is for " + Group.findPermInt(CommandOtherPerms.GetPerm(this, 1)).name + "+"); return; }
+					if ((int)p.group.Permission < CommandOtherPerms.GetPerm(this, 1)) { Player.SendMessage(p, "That commands addition is for " + Group.findPermInt(CommandOtherPerms.GetPerm(this, 1)).name + "+"); return; }
 					if (message2.Length != 3)
 						goto Help;
 
@@ -69,7 +69,7 @@ namespace MCForge.Commands
 				}
 				if (message2[0].ToLower() == "hcone")
 				{
-                    if ((int)p.group.Permission < CommandOtherPerms.GetPerm(this, 1)) { Player.SendMessage(p, "That commands addition is for " + Group.findPermInt(CommandOtherPerms.GetPerm(this, 1)).name + "+"); return; }
+					if ((int)p.group.Permission < CommandOtherPerms.GetPerm(this, 1)) { Player.SendMessage(p, "That commands addition is for " + Group.findPermInt(CommandOtherPerms.GetPerm(this, 1)).name + "+"); return; }
 					if (message2.Length != 3)
 						goto Help;
 
@@ -93,7 +93,7 @@ namespace MCForge.Commands
 
 				if (message2[0].ToLower() == "icone")
 				{
-                    if ((int)p.group.Permission < CommandOtherPerms.GetPerm(this, 1)) { Player.SendMessage(p, "That commands addition is for " + Group.findPermInt(CommandOtherPerms.GetPerm(this, 1)).name + "+"); return; }
+					if ((int)p.group.Permission < CommandOtherPerms.GetPerm(this, 1)) { Player.SendMessage(p, "That commands addition is for " + Group.findPermInt(CommandOtherPerms.GetPerm(this, 1)).name + "+"); return; }
 					if (message2.Length != 3)
 						goto Help;
 
@@ -116,7 +116,7 @@ namespace MCForge.Commands
 				}
 				if (message2[0].ToLower() == "hicone")
 				{
-                    if ((int)p.group.Permission < CommandOtherPerms.GetPerm(this, 1)) { Player.SendMessage(p, "That commands addition is for " + Group.findPermInt(CommandOtherPerms.GetPerm(this, 1)).name + "+"); return; }
+					if ((int)p.group.Permission < CommandOtherPerms.GetPerm(this, 1)) { Player.SendMessage(p, "That commands addition is for " + Group.findPermInt(CommandOtherPerms.GetPerm(this, 1)).name + "+"); return; }
 					if (message2.Length != 3)
 						goto Help;
 
@@ -141,7 +141,7 @@ namespace MCForge.Commands
 				#region pyramids
 				if (message2[0].ToLower() == "pyramid")
 				{
-                    if ((int)p.group.Permission < CommandOtherPerms.GetPerm(this, 2)) { Player.SendMessage(p, "That commands addition is for " + Group.findPermInt(CommandOtherPerms.GetPerm(this, 2)).name + "+"); return; }
+					if ((int)p.group.Permission < CommandOtherPerms.GetPerm(this, 2)) { Player.SendMessage(p, "That commands addition is for " + Group.findPermInt(CommandOtherPerms.GetPerm(this, 2)).name + "+"); return; }
 					if (message2.Length != 3)
 						goto Help;
 
@@ -164,7 +164,7 @@ namespace MCForge.Commands
 				}
 				if (message2[0].ToLower() == "hpyramid")
 				{
-                    if ((int)p.group.Permission < CommandOtherPerms.GetPerm(this, 2)) { Player.SendMessage(p, "That commands addition is for " + Group.findPermInt(CommandOtherPerms.GetPerm(this, 2)).name + "+"); return; }
+					if ((int)p.group.Permission < CommandOtherPerms.GetPerm(this, 2)) { Player.SendMessage(p, "That commands addition is for " + Group.findPermInt(CommandOtherPerms.GetPerm(this, 2)).name + "+"); return; }
 					if (message2.Length != 3)
 						goto Help;
 
@@ -187,7 +187,7 @@ namespace MCForge.Commands
 				}
 				if (message2[0].ToLower() == "ipyramid")
 				{
-                    if ((int)p.group.Permission < CommandOtherPerms.GetPerm(this, 2)) { Player.SendMessage(p, "That commands addition is for " + Group.findPermInt(CommandOtherPerms.GetPerm(this, 2)).name + "+"); return; }
+					if ((int)p.group.Permission < CommandOtherPerms.GetPerm(this, 2)) { Player.SendMessage(p, "That commands addition is for " + Group.findPermInt(CommandOtherPerms.GetPerm(this, 2)).name + "+"); return; }
 					if (message2.Length != 3)
 						goto Help;
 
@@ -210,7 +210,7 @@ namespace MCForge.Commands
 				}
 				if (message2[0].ToLower() == "hipyramid")
 				{
-                    if ((int)p.group.Permission < CommandOtherPerms.GetPerm(this, 2)) { Player.SendMessage(p, "That commands addition is for " + Group.findPermInt(CommandOtherPerms.GetPerm(this, 2)).name + "+"); return; }
+					if ((int)p.group.Permission < CommandOtherPerms.GetPerm(this, 2)) { Player.SendMessage(p, "That commands addition is for " + Group.findPermInt(CommandOtherPerms.GetPerm(this, 2)).name + "+"); return; }
 					if (message2.Length != 3)
 						goto Help;
 
@@ -235,7 +235,7 @@ namespace MCForge.Commands
 				#region spheres
 				if (message2[0].ToLower() == "sphere")
 				{
-                    if ((int)p.group.Permission < CommandOtherPerms.GetPerm(this, 3)) { Player.SendMessage(p, "That commands addition is for " + Group.findPermInt(CommandOtherPerms.GetPerm(this, 3)).name + "+"); return; }
+					if ((int)p.group.Permission < CommandOtherPerms.GetPerm(this, 3)) { Player.SendMessage(p, "That commands addition is for " + Group.findPermInt(CommandOtherPerms.GetPerm(this, 3)).name + "+"); return; }
 					if (message2.Length != 2)
 						goto Help;
 
@@ -257,7 +257,7 @@ namespace MCForge.Commands
 				}
 				if (message2[0].ToLower() == "hsphere")
 				{
-                    if ((int)p.group.Permission < CommandOtherPerms.GetPerm(this, 3)) { Player.SendMessage(p, "That commands addition is for " + Group.findPermInt(CommandOtherPerms.GetPerm(this, 3)).name + "+"); return; }
+					if ((int)p.group.Permission < CommandOtherPerms.GetPerm(this, 3)) { Player.SendMessage(p, "That commands addition is for " + Group.findPermInt(CommandOtherPerms.GetPerm(this, 3)).name + "+"); return; }
 					if (message2.Length != 2)
 						goto Help;
 
@@ -281,7 +281,7 @@ namespace MCForge.Commands
 				#region other
 				if (message2[0].ToLower() == "volcano")
 				{
-                    if ((int)p.group.Permission < CommandOtherPerms.GetPerm(this, 4)) { Player.SendMessage(p, "That commands addition is for " + Group.findPermInt(CommandOtherPerms.GetPerm(this, 4)).name + "+"); return; }
+					if ((int)p.group.Permission < CommandOtherPerms.GetPerm(this, 4)) { Player.SendMessage(p, "That commands addition is for " + Group.findPermInt(CommandOtherPerms.GetPerm(this, 4)).name + "+"); return; }
 					if (message2.Length != 3)
 						goto Help;
 

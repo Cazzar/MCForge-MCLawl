@@ -1,23 +1,23 @@
 /*
- * Thresher IRC client library
- * Copyright (C) 2002 Aaron Hunter <thresher@sharkbite.org>
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- * 
- * See the gpl.txt file located in the top-level-directory of
- * the archive of this library for complete text of license.
+	* Thresher IRC client library
+	* Copyright (C) 2002 Aaron Hunter <thresher@sharkbite.org>
+	*
+	* This program is free software; you can redistribute it and/or
+	* modify it under the terms of the GNU General Public License
+	* as published by the Free Software Foundation; either version 2
+	* of the License, or (at your option) any later version.
+	*
+	* This program is distributed in the hope that it will be useful,
+	* but WITHOUT ANY WARRANTY; without even the implied warranty of
+	* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+	* GNU General Public License for more details.
+	*
+	* You should have received a copy of the GNU General Public License
+	* along with this program; if not, write to the Free Software
+	* Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+	*
+	* See the gpl.txt file located in the top-level-directory of
+	* the archive of this library for complete text of license.
 */
 
 using System;
@@ -27,7 +27,7 @@ using System.Globalization;
 namespace Sharkbite.Irc
 {
 	/// <summary>
-	/// The collection of information about a user 
+	/// The collection of information about a user
 	/// returned by a Whois query. Instances of this class
 	/// are created internally.
 	/// </summary>
@@ -45,7 +45,7 @@ namespace Sharkbite.Irc
 		/// Create an empty instance where the operator
 		/// property defaults to false.
 		/// </summary>
-		internal WhoisInfo() 
+		internal WhoisInfo()
 		{
 			isOperator = false;
 		}
@@ -117,7 +117,7 @@ namespace Sharkbite.Irc
 			}
 		}
 
-		internal void SetChannels( string[] channels ) 
+		internal void SetChannels( string[] channels )
 		{
 			this.channels = channels;
 		}

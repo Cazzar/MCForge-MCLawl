@@ -1,23 +1,23 @@
 /*
- * Thresher IRC client library
- * Copyright (C) 2002 Aaron Hunter <thresher@sharkbite.org>
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- * 
- * See the gpl.txt file located in the top-level-directory of
- * the archive of this library for complete text of license.
+	* Thresher IRC client library
+	* Copyright (C) 2002 Aaron Hunter <thresher@sharkbite.org>
+	*
+	* This program is free software; you can redistribute it and/or
+	* modify it under the terms of the GNU General Public License
+	* as published by the Free Software Foundation; either version 2
+	* of the License, or (at your option) any later version.
+	*
+	* This program is distributed in the hope that it will be useful,
+	* but WITHOUT ANY WARRANTY; without even the implied warranty of
+	* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+	* GNU General Public License for more details.
+	*
+	* You should have received a copy of the GNU General Public License
+	* along with this program; if not, write to the Free Software
+	* Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+	*
+	* See the gpl.txt file located in the top-level-directory of
+	* the archive of this library for complete text of license.
 */
 
 using System;
@@ -64,7 +64,7 @@ namespace Sharkbite.Irc
 		//The last time any data was received or sent successfully
 		//used to test for a timeout.
 		private DateTime lastActivity;
-		//Signals whether the session is waiting for an Accept message 
+		//Signals whether the session is waiting for an Accept message
 		//in reponse to a Resume request.
 		private bool waitingOnAccept;
 		private DccUserInfo dccUserInfo;
@@ -74,7 +74,7 @@ namespace Sharkbite.Irc
 		private string listenIPAddress;
 		private Socket socket;
 		private Socket serverSocket;
-		private Thread thread;		
+		private Thread thread;
 
 		internal DccFileInfo dccFileInfo;
 
@@ -82,7 +82,7 @@ namespace Sharkbite.Irc
 		/// Prepare a new instance with default values but do not connect
 		/// to another user.
 		/// </summary>
-		internal DccFileSession( DccUserInfo dccUserInfo, DccFileInfo dccFileInfo, int bufferSize, int listenPort, string sessionID ) 
+		internal DccFileSession( DccUserInfo dccUserInfo, DccFileInfo dccFileInfo, int bufferSize, int listenPort, string sessionID )
 		{
 			this.dccUserInfo = dccUserInfo;
 			this.dccFileInfo = dccFileInfo;
@@ -99,7 +99,7 @@ namespace Sharkbite.Irc
 			{
 				return lastActivity;
 			}
-		}	
+		}
 
 		/// <summary>
 		/// A unique identifier for this session.
@@ -107,9 +107,9 @@ namespace Sharkbite.Irc
 		/// <value>Uses the TCP/IP port prefixed by an 'S' if this
 		/// session is serving the file or a 'C' if this session is receiving the
 		/// file.</value>
-		public string ID 
+		public string ID
 		{
-			get 
+			get
 			{
 				return sessionID;
 			}
@@ -117,9 +117,9 @@ namespace Sharkbite.Irc
 		/// <summary>
 		/// The DccUserInfo object associated with this DccFileSession.
 		/// </summary>
-		public DccUserInfo User 
+		public DccUserInfo User
 		{
-			get 
+			get
 			{
 				return dccUserInfo;
 			}
@@ -127,9 +127,9 @@ namespace Sharkbite.Irc
 		/// <summary>
 		/// The DccFileInfo object associated with this DccFileSession.
 		/// </summary>
-		public DccFileInfo File 
+		public DccFileInfo File
 		{
-			get 
+			get
 			{
 				return dccFileInfo;
 			}
@@ -138,15 +138,15 @@ namespace Sharkbite.Irc
 		/// The information about the remote user.
 		/// </summary>
 		/// <value>A read only instance of DccUserInfo.</value>
-		public DccUserInfo ClientInfo 
+		public DccUserInfo ClientInfo
 		{
-			get 
+			get
 			{
 				return dccUserInfo;
 			}
 		}
 
-		private void SendAccept() 
+		private void SendAccept()
 		{
 			StringBuilder builder = new StringBuilder("PRIVMSG ", 512 );
 			builder.Append( dccUserInfo.Nick );
@@ -159,7 +159,7 @@ namespace Sharkbite.Irc
 			builder.Append( "\x0001\n");
 			dccUserInfo.Connection.Sender.Raw( builder.ToString() );
 		}
-		private void DccSend( IPAddress sendAddress ) 
+		private void DccSend( IPAddress sendAddress )
 		{
 			StringBuilder builder = new StringBuilder("PRIVMSG ", 512 );
 			builder.Append( dccUserInfo.Nick );
@@ -175,7 +175,7 @@ namespace Sharkbite.Irc
 			builder.Append( "\x0001\n");
 			dccUserInfo.Connection.Sender.Raw( builder.ToString() );
 		}
-		private void SendResume() 
+		private void SendResume()
 		{
 			StringBuilder builder = new StringBuilder("PRIVMSG ", 512 );
 			builder.Append( dccUserInfo.Nick );
@@ -191,43 +191,43 @@ namespace Sharkbite.Irc
 		/// <summary>
 		/// Attempt to shut the session down correctly.
 		/// </summary>
-		private void Cleanup() 
+		private void Cleanup()
 		{
 			Debug.WriteLineIf( DccUtil.DccTrace.TraceInfo, "[" + Thread.CurrentThread.Name +"] DccFileSession::Cleanup()");
 			DccFileSessionManager.DefaultInstance.RemoveSession( this );
-			if( serverSocket != null ) 
+			if( serverSocket != null )
 			{
 				serverSocket.Close();
 			}
-			if( socket != null ) 
+			if( socket != null )
 			{
-				try 
+				try
 				{
 					socket.Close();
 				}
-				catch( Exception e ) 
+				catch( Exception e )
 				{
 					//Ignore this exception
 				}
 			}
 			dccFileInfo.CloseFile();
 		}
-		private void ResetActivityTimer() 
+		private void ResetActivityTimer()
 		{
 			lastActivity = DateTime.Now;
 		}
-		private void SignalTransferStart() 
+		private void SignalTransferStart()
 		{
 			ResetActivityTimer();
-			if( OnFileTransferStarted != null ) 
+			if( OnFileTransferStarted != null )
 			{
 				OnFileTransferStarted( this );
-			}			
+			}
 		}
-		private void Listen() 
+		private void Listen()
 		{
 			Debug.WriteLineIf( DccUtil.DccTrace.TraceInfo, "[" + Thread.CurrentThread.Name +"] DccFileSession::Listen()");
-			try 
+			try
 			{
 				//Wait for remote client to connect
 				IPEndPoint localEndPoint = new IPEndPoint( DccUtil.LocalHost(), listenPort );
@@ -238,32 +238,32 @@ namespace Sharkbite.Irc
 				socket = serverSocket.Accept();
 				serverSocket.Close();
 				Debug.WriteLineIf( DccUtil.DccTrace.TraceInfo, "[" + Thread.CurrentThread.Name +"] DccFileSession::Listen() Remote user connected.");
-				//Advance to the correct point in the file in case this is a resume 
+				//Advance to the correct point in the file in case this is a resume
 				dccFileInfo.GotoReadPosition();
 				SignalTransferStart();
-				if( turboMode ) 
+				if( turboMode )
 				{
 					Upload();
 				}
-				else 
+				else
 				{
 					UploadLegacy();
 				}
 			}
-			catch ( Exception se) 
+			catch ( Exception se)
 			{
-				Debug.WriteLineIf( Rfc2812Util.IrcTrace.TraceWarning, "[" + Thread.CurrentThread.Name +"] DccFileSession::Listen() Connection broken" );		
+				Debug.WriteLineIf( Rfc2812Util.IrcTrace.TraceWarning, "[" + Thread.CurrentThread.Name +"] DccFileSession::Listen() Connection broken" );
 				Interrupted();
 			}
 		}
-		private void Upload( ) 
+		private void Upload( )
 		{
 			Debug.WriteLineIf( DccUtil.DccTrace.TraceInfo, "[" + Thread.CurrentThread.Name +"] DccFileSession::Upload()" + (turboMode? " Turbo": " Legacy") + " mode" );
-			try 
+			try
 			{
 				int bytesRead = 0;
 				byte[] ack = new byte[4];
-				while( (bytesRead = dccFileInfo.TransferStream.Read(buffer, 0 , buffer.Length ) ) != 0 ) 
+				while( (bytesRead = dccFileInfo.TransferStream.Read(buffer, 0 , buffer.Length ) ) != 0 )
 				{
 					socket.Send(buffer, 0 , bytesRead, SocketFlags.None);
 					ResetActivityTimer();
@@ -272,20 +272,20 @@ namespace Sharkbite.Irc
 				//Now we are done
 				Finished();
 			}
-			catch( Exception e ) 
+			catch( Exception e )
 			{
-				Debug.WriteLineIf( Rfc2812Util.IrcTrace.TraceWarning, "[" + Thread.CurrentThread.Name +"] DccFileSession::Upload() exception=" + e);		
+				Debug.WriteLineIf( Rfc2812Util.IrcTrace.TraceWarning, "[" + Thread.CurrentThread.Name +"] DccFileSession::Upload() exception=" + e);
 				Interrupted();
 			}
 		}
-		private void UploadLegacy( ) 
+		private void UploadLegacy( )
 		{
 			Debug.WriteLineIf( DccUtil.DccTrace.TraceInfo, "[" + Thread.CurrentThread.Name +"] DccFileSession::UploadLegacy()" );
-			try 
+			try
 			{
 				int bytesRead = 0;
 				byte[] ack = new byte[4];
-				while( (bytesRead = dccFileInfo.TransferStream.Read(buffer, 0 , buffer.Length ) ) != 0 ) 
+				while( (bytesRead = dccFileInfo.TransferStream.Read(buffer, 0 , buffer.Length ) ) != 0 )
 				{
 					socket.Send(buffer, 0 , bytesRead, SocketFlags.None);
 					ResetActivityTimer();
@@ -299,29 +299,29 @@ namespace Sharkbite.Irc
 				while( !dccFileInfo.AcksFinished( DccUtil.DccBytesToLong( ack ) ) )
 				{
 					socket.Receive( ack );
-				}					
+				}
 				//Now we are done
 				Finished();
 			}
-			catch( Exception e ) 
+			catch( Exception e )
 			{
-				Debug.WriteLineIf( Rfc2812Util.IrcTrace.TraceWarning, "[" + Thread.CurrentThread.Name +"] DccFileSession::UploadLegacy() exception=" + e);		
+				Debug.WriteLineIf( Rfc2812Util.IrcTrace.TraceWarning, "[" + Thread.CurrentThread.Name +"] DccFileSession::UploadLegacy() exception=" + e);
 				Interrupted();
 			}
 		}
-		private void Download() 
+		private void Download()
 		{
 			Debug.WriteLineIf( DccUtil.DccTrace.TraceInfo, "[" + Thread.CurrentThread.Name +"] DccFileSession::Download()" + (turboMode? " Turbo": " Legacy") + " mode" );
-			try 
+			try
 			{
 				socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp );
 				socket.Connect(dccUserInfo.RemoteEndPoint );
 				int bytesRead = 0;
-				while( !dccFileInfo.AllBytesTransfered() ) 
+				while( !dccFileInfo.AllBytesTransfered() )
 				{
 					bytesRead = socket.Receive( buffer );
 					//Remote server closed the connection before all bytes were sent
-					if( bytesRead == 0 ) 
+					if( bytesRead == 0 )
 					{
 						Interrupted();
 						return;
@@ -330,7 +330,7 @@ namespace Sharkbite.Irc
 					AddBytesProcessed( bytesRead );
 					dccFileInfo.TransferStream.Write(buffer, 0 , bytesRead );
 					//Send ack if in legacy mode
-					if( !turboMode ) 
+					if( !turboMode )
 					{
 						socket.Send( DccUtil.DccBytesReceivedFormat( dccFileInfo.CurrentFilePosition() ) );
 					}
@@ -338,46 +338,46 @@ namespace Sharkbite.Irc
 				dccFileInfo.TransferStream.Flush();
 				Finished();
 			}
-			catch( Exception e ) 
+			catch( Exception e )
 			{
-				Debug.WriteLineIf( Rfc2812Util.IrcTrace.TraceWarning, "[" + Thread.CurrentThread.Name +"] DccFileSession::Download() exception=" + e);		
-				if( e.Message.IndexOf("refused" ) > 0 ) 
+				Debug.WriteLineIf( Rfc2812Util.IrcTrace.TraceWarning, "[" + Thread.CurrentThread.Name +"] DccFileSession::Download() exception=" + e);
+				if( e.Message.IndexOf("refused" ) > 0 )
 				{
 					dccUserInfo.Connection.Listener.Error( ReplyCode.DccConnectionRefused, "Connection refused by remote user." );
 				}
-				else 
+				else
 				{
 					dccUserInfo.Connection.Listener.Error( ReplyCode.ConnectionFailed, "Unknown socket error:" + e.Message );
 				}
 				Interrupted();
 			}
-		}	
+		}
 
-		internal void AddBytesProcessed( int bytesRead ) 
+		internal void AddBytesProcessed( int bytesRead )
 		{
 			dccFileInfo.AddBytesTransfered( bytesRead );
-			if( OnFileTransferProgress != null ) 
-			{	
+			if( OnFileTransferProgress != null )
+			{
 				OnFileTransferProgress( this, bytesRead);
 			}
 		}
 		/// <summary>
 		/// Called by DccListener when it receives a DCC Accept message.
 		/// </summary>
-		internal void OnDccAcceptReceived( long position ) 
+		internal void OnDccAcceptReceived( long position )
 		{
 			Debug.WriteLineIf( DccUtil.DccTrace.TraceInfo, "[" + Thread.CurrentThread.Name +"] DccFileSession::OnDccAcceptReceived()");
-			lock( this ) 
+			lock( this )
 			{
 				//Are we still waiting on the accept?
-				if( !waitingOnAccept ) 
+				if( !waitingOnAccept )
 				{
 					//Assume that a normal receive has gone ahead
 					return;
 				}
 				//No longer waiting
 				waitingOnAccept = false;
-				if( !dccFileInfo.AcceptPositionMatches( position ) ) 
+				if( !dccFileInfo.AcceptPositionMatches( position ) )
 				{
 					dccUserInfo.Connection.Listener.Error( ReplyCode.BadDccAcceptValue, "Asked to start at " + dccFileInfo.FileStartingPosition + " but was sent " + position );
 					Interrupted();
@@ -388,28 +388,28 @@ namespace Sharkbite.Irc
 				dccFileInfo.GotoWritePosition();
 				thread = new Thread( new ThreadStart( Download ) );
 				thread.Name = ToString();
-				thread.Start();	
+				thread.Start();
 			}
 		}
 		/// <summary>
-		/// A DCC Send request has already been sent and the remote user 
+		/// A DCC Send request has already been sent and the remote user
 		/// has responded with a Resume request.
 		/// </summary>
 		/// <param name="resumePosition">The number of bytes the remote user already has..</param>
-		/// <exception cref="ArgumentException">If the session is no longer active or the file 
+		/// <exception cref="ArgumentException">If the session is no longer active or the file
 		/// resume position was larger than the file.</exception>
-		internal void OnDccResumeRequest( long resumePosition ) 
+		internal void OnDccResumeRequest( long resumePosition )
 		{
 			Debug.WriteLineIf( DccUtil.DccTrace.TraceInfo, "[" + Thread.CurrentThread.Name +"] DccFileSession::OnDccResumeRequest()");
-			lock( this ) 
+			lock( this )
 			{
 				ResetActivityTimer();
 				//Make sure we have not already started transfering data and that this file is
 				//resumeable.
-				if( dccFileInfo.BytesTransfered == 0 && dccFileInfo.CanResume() ) 
+				if( dccFileInfo.BytesTransfered == 0 && dccFileInfo.CanResume() )
 				{
 					//Make sure the position is valid
-					if( dccFileInfo.ResumePositionValid( resumePosition ) ) 
+					if( dccFileInfo.ResumePositionValid( resumePosition ) )
 					{
 						dccFileInfo.SetResumePosition( resumePosition );
 						SendAccept();
@@ -427,20 +427,20 @@ namespace Sharkbite.Irc
 		/// Called when there has been no activity is
 		/// a session for the the length of the timeout period.
 		/// </summary>
-		internal void TimedOut() 
+		internal void TimedOut()
 		{
 			Debug.WriteLineIf( DccUtil.DccTrace.TraceInfo, ToString() + " timed out.");
-			if( waitingOnAccept ) 
+			if( waitingOnAccept )
 			{
 				waitingOnAccept = false;
 				//Start a new thread to download the whole file
 				thread = new Thread( new ThreadStart( Download ) );
 				thread.Name = ToString();
-				thread.Start();	
+				thread.Start();
 			}
-			else 
-			{	
-				if( OnFileTransferTimeout != null ) 
+			else
+			{
+				if( OnFileTransferTimeout != null )
 				{
 					OnFileTransferTimeout( this );
 				}
@@ -451,11 +451,11 @@ namespace Sharkbite.Irc
 		/// Non synchro version of Stop() for internal
 		/// use.
 		/// </summary>
-		internal void Interrupted() 
+		internal void Interrupted()
 		{
 			Debug.WriteLineIf( DccUtil.DccTrace.TraceInfo, "[" + Thread.CurrentThread.Name +"] DccFileSession::Interrupted()");
 			Cleanup();
-			if( OnFileTransferInterrupted != null ) 
+			if( OnFileTransferInterrupted != null )
 			{
 				OnFileTransferInterrupted( this );
 			}
@@ -464,11 +464,11 @@ namespace Sharkbite.Irc
 		/// The file transfer is done. So close everything
 		/// cleanly.
 		/// </summary>
-		internal void Finished() 
+		internal void Finished()
 		{
 			Debug.WriteLineIf( DccUtil.DccTrace.TraceInfo, "[" + Thread.CurrentThread.Name +"] DccFileSession::Finished()");
 			Cleanup();
-			if( OnFileTransferCompleted != null ) 
+			if( OnFileTransferCompleted != null )
 			{
 				OnFileTransferCompleted( this );
 			}
@@ -477,13 +477,13 @@ namespace Sharkbite.Irc
 		/// <summary>
 		/// Stop the file transfer.
 		/// </summary>
-		public void Stop() 
+		public void Stop()
 		{
 			Debug.WriteLineIf( DccUtil.DccTrace.TraceInfo, "[" + Thread.CurrentThread.Name +"] DccFileSession::Stop()");
-			lock( this ) 
+			lock( this )
 			{
 				Cleanup();
-				if( OnFileTransferInterrupted != null ) 
+				if( OnFileTransferInterrupted != null )
 				{
 					OnFileTransferInterrupted( this );
 				}
@@ -493,7 +493,7 @@ namespace Sharkbite.Irc
 		/// Summary information about this session.
 		/// </summary>
 		/// <returns>Simple information about this session in human readable format.</returns>
-		public override string ToString() 
+		public override string ToString()
 		{
 			return "DccFileSession:: ID=" + sessionID + " User=" + dccUserInfo.ToString() + " File=" + dccFileInfo.DccFileName;
 		}
@@ -508,7 +508,7 @@ namespace Sharkbite.Irc
 		/// <param name="fileName">The name of the file to have sent. This should
 		/// not contain any spaces.</param>
 		/// <param name="turbo">True to use send-ahead mode for transfers.</param>
-		public static void Get( Connection connection, string nick, string fileName, bool turbo ) 
+		public static void Get( Connection connection, string nick, string fileName, bool turbo )
 		{
 			Debug.WriteLineIf( DccUtil.DccTrace.TraceInfo, "[" + Thread.CurrentThread.Name +"] DccFileSession::Get()");
 			StringBuilder builder = new StringBuilder("PRIVMSG ", 512 );
@@ -526,13 +526,13 @@ namespace Sharkbite.Irc
 		/// will be closed.
 		/// </summary>
 		/// <remarks>
-		/// This method should be called from within a try/catch block 
-		/// in case there are socket errors. This methods will also automatically 
+		/// This method should be called from within a try/catch block
+		/// in case there are socket errors. This methods will also automatically
 		/// handle a Resume if the remote client requests it.
 		/// </remarks>
 		/// <param name="dccUserInfo">The information about the remote user.</param>
-		/// <param name="listenIPAddress">The IP address of the local machine in dot 
-		/// quad format (e.g. 192.168.0.25). This is the address that will be sent to the 
+		/// <param name="listenIPAddress">The IP address of the local machine in dot
+		/// quad format (e.g. 192.168.0.25). This is the address that will be sent to the
 		/// remote user. The IP address of the NAT machine must be used if the
 		/// client is behind a NAT/Firewall system. </param>
 		/// <param name="listenPort">The port that the session will listen on.</param>
@@ -543,18 +543,18 @@ namespace Sharkbite.Irc
 		/// <param name="turbo">True to use send-ahead mode for transfers.</param>
 		/// <returns>A unique session instance for this file and remote user.</returns>
 		/// <exception cref="ArgumentException">If the listen port is already in use.</exception>
-		public static DccFileSession Send( 
-			DccUserInfo dccUserInfo, 
-			string listenIPAddress, 
-			int listenPort, 
-			DccFileInfo dccFileInfo, 
+		public static DccFileSession Send(
+			DccUserInfo dccUserInfo,
+			string listenIPAddress,
+			int listenPort,
+			DccFileInfo dccFileInfo,
 			int bufferSize,
 			bool turbo)
 		{
 			Debug.WriteLineIf( DccUtil.DccTrace.TraceInfo, "[" + Thread.CurrentThread.Name +"] DccFileSession::Send()");
 			DccFileSession session = null;
 			//Test if we are already using this port
-			if( DccFileSessionManager.DefaultInstance.ContainsSession( "S" + listenPort ) ) 
+			if( DccFileSessionManager.DefaultInstance.ContainsSession( "S" + listenPort ) )
 			{
 				throw new ArgumentException("Already listening on port " + listenPort );
 			}
@@ -564,7 +564,7 @@ namespace Sharkbite.Irc
 				//set turbo mode
 				session.turboMode = turbo;
 				//Set server IP address
-				session.listenIPAddress = listenIPAddress; 
+				session.listenIPAddress = listenIPAddress;
 				//Add session to active sessions hashtable
 				DccFileSessionManager.DefaultInstance.AddSession( session );
 				//Create stream to file
@@ -572,14 +572,14 @@ namespace Sharkbite.Irc
 				//Start session Thread
 				session.thread = new Thread(new ThreadStart( session.Listen ) );
 				session.thread.Name = session.ToString();
-				session.thread.Start();	
+				session.thread.Start();
 				//Send DCC Send request to remote user
 				session.DccSend( IPAddress.Parse( listenIPAddress) );
 				return session;
 			}
-			catch( Exception e ) 
+			catch( Exception e )
 			{
-				if( session != null ) 
+				if( session != null )
 				{
 					DccFileSessionManager.DefaultInstance.RemoveSession( session );
 				}
@@ -593,59 +593,59 @@ namespace Sharkbite.Irc
 		/// event.
 		/// </summary>
 		/// <remarks>
-		/// This method should be called from within a try/catch block 
+		/// This method should be called from within a try/catch block
 		/// in case it is unable to connect or there are other socket
 		/// errors.
 		/// </remarks>
 		/// <param name="dccUserInfo">Information on the remote user.</param>
-		/// <param name="dccFileInfo">The local file that will hold the data being sent. If the file 
+		/// <param name="dccFileInfo">The local file that will hold the data being sent. If the file
 		/// is the result of a previous incomplete download the the attempt will be made
 		/// to resume where the previous left off.</param>
 		/// <param name="turbo">Will the send ahead protocol be used.</param>
 		/// <returns>A unique session instance for this file and remote user.</returns>
 		/// <exception cref="ArgumentException">If the listen port is already in use.</exception>
-		public static DccFileSession Receive(DccUserInfo dccUserInfo, DccFileInfo dccFileInfo, bool turbo ) 
+		public static DccFileSession Receive(DccUserInfo dccUserInfo, DccFileInfo dccFileInfo, bool turbo )
 		{
 			Debug.WriteLineIf( DccUtil.DccTrace.TraceInfo, "[" + Thread.CurrentThread.Name +"] DccFileSession::Receive()");
 			//Test if we are already using this port
-			if( DccFileSessionManager.DefaultInstance.ContainsSession( "C" + dccUserInfo.remoteEndPoint.Port ) ) 
+			if( DccFileSessionManager.DefaultInstance.ContainsSession( "C" + dccUserInfo.remoteEndPoint.Port ) )
 			{
 				throw new ArgumentException("Already listening on port " + dccUserInfo.remoteEndPoint.Port );
 			}
 			DccFileSession session = null;
-			try 
+			try
 			{
-				session = new DccFileSession( dccUserInfo, dccFileInfo, (64 * 1024 ), 
+				session = new DccFileSession( dccUserInfo, dccFileInfo, (64 * 1024 ),
 					dccUserInfo.remoteEndPoint.Port, "C" + dccUserInfo.remoteEndPoint.Port );
-				//Has the initiator specified the turbo protocol? 
+				//Has the initiator specified the turbo protocol?
 				session.turboMode = turbo;
 				//Open file for writing
 				dccFileInfo.OpenForWrite();
 				DccFileSessionManager.DefaultInstance.AddSession( session );
 				//Determine if we can resume a download
-				if( session.dccFileInfo.ShouldResume() ) 
+				if( session.dccFileInfo.ShouldResume() )
 				{
 					session.waitingOnAccept = true;
 					session.dccFileInfo.SetResumeToFileSize();
 					session.SendResume();
 				}
-				else 
+				else
 				{
 					session.thread = new Thread( new ThreadStart( session.Download ) );
 					session.thread.Name = session.ToString();
-					session.thread.Start();	
+					session.thread.Start();
 				}
 				return session;
 			}
-			catch( Exception e ) 
+			catch( Exception e )
 			{
-				if( session != null ) 
+				if( session != null )
 				{
 					DccFileSessionManager.DefaultInstance.RemoveSession( session );
 				}
 				throw e;
 			}
 		}
-		
+
 	}
 }

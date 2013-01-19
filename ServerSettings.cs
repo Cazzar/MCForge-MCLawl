@@ -1,14 +1,14 @@
-﻿/*
+/*
 	Copyright 2011 MCForge
-	
+
 	Dual-licensed under the	Educational Community License, Version 2.0 and
 	the GNU General Public License, Version 3 (the "Licenses"); you may
 	not use this file except in compliance with the Licenses. You may
 	obtain a copy of the Licenses at
-	
+
 	http://www.opensource.org/licenses/ecl2.php
 	http://www.gnu.org/licenses/gpl-3.0.html
-	
+
 	Unless required by applicable law or agreed to in writing,
 	software distributed under the Licenses are distributed on an "AS IS"
 	BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
@@ -24,9 +24,9 @@ using System.Net;
 namespace MCForge {
 	//derp idk just need to edit this so I can commit :/
 	public static class ServerSettings {
-        /// <summary>
-        /// The url MCForge downloads additional URL's from
-        /// </summary>
+		/// <summary>
+		/// The url MCForge downloads additional URL's from
+		/// </summary>
 		public const string UrlsUrl = "http://server.mcforge.net/urls.txt";
 
 		private static string _RevisionList = "http://www.mcforge.net/revs.txt";
@@ -57,25 +57,25 @@ namespace MCForge {
 			_HeartbeatAnnounce = lines[1];
 			_ArchivePath = lines[2];
 		}
-        /// <summary>
-        /// returns the MCForge archives url
-        /// </summary>
+		/// <summary>
+		/// returns the MCForge archives url
+		/// </summary>
 		public static string ArchivePath {
 			get {
 				return _ArchivePath;
 			}
 		}
-        /// <summary>
-        /// returns the MCForge heartbeat announce URL
-        /// </summary>
+		/// <summary>
+		/// returns the MCForge heartbeat announce URL
+		/// </summary>
 		public static string HeartbeatAnnounce {
 			get {
 				return _HeartbeatAnnounce;
 			}
 		}
-        /// <summary>
-        ///  returns the MCForge revision list URL
-        /// </summary>
+		/// <summary>
+		///  returns the MCForge revision list URL
+		/// </summary>
 		public static string RevisionList {
 			get {
 				return _RevisionList;

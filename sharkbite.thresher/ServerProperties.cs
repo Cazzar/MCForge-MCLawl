@@ -37,15 +37,15 @@ namespace Sharkbite.Irc
 		/// property strings.
 		/// </summary>
 		/// <returns>The string sent by the server or <see cref="String.Empty"/> if not present..</returns>
-		public string this [ string key ] 
+		public string this [ string key ]
 		{
 			get
 			{
-				if( properties[ key ] != null ) 
+				if( properties[ key ] != null )
 				{
 					return (string) properties[key];
 				}
-				else 
+				else
 				{
 					return String.Empty;
 				}
@@ -53,15 +53,15 @@ namespace Sharkbite.Irc
 		}
 
 		/// <summary>
-		/// Add a property retrieved from the IRC 
+		/// Add a property retrieved from the IRC
 		/// server.
 		/// </summary>
 		internal void SetProperty( string key, string propertyValue )
 		{
-            if (properties.ContainsKey(key)) {
-                properties[key] = propertyValue;
-                return;
-            }
+			if (properties.ContainsKey(key)) {
+				properties[key] = propertyValue;
+				return;
+			}
 			properties.Add( key, propertyValue );
 		}
 
@@ -71,8 +71,8 @@ namespace Sharkbite.Irc
 		/// </summary>
 		/// <returns>An IDictionaryEnumerator type enumeration.</returns>
 		/// <example><code>
-		/// //To loop over all the values	
-		/// foreach( DictionaryEntry entry in connection.ServerProperties ) 
+		/// //To loop over all the values
+		/// foreach( DictionaryEntry entry in connection.ServerProperties )
 		/// {
 		/// Console.WriteLine("Key:" + entry.Key + " Value:" + entry.Value );
 		/// }
@@ -86,7 +86,7 @@ namespace Sharkbite.Irc
 		/// </summary>
 		/// <param name="key">The server properties key to test.</param>
 		/// <returns>True if it is present.</returns>
-		public bool ContainsKey( string key ) 
+		public bool ContainsKey( string key )
 		{
 			return properties[ key] != null;
 		}

@@ -1,23 +1,23 @@
 /*
- * Thresher IRC client library
- * Copyright (C) 2002 Aaron Hunter <thresher@sharkbite.org>
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- * 
- * See the gpl.txt file located in the top-level-directory of
- * the archive of this library for complete text of license.
+	* Thresher IRC client library
+	* Copyright (C) 2002 Aaron Hunter <thresher@sharkbite.org>
+	*
+	* This program is free software; you can redistribute it and/or
+	* modify it under the terms of the GNU General Public License
+	* as published by the Free Software Foundation; either version 2
+	* of the License, or (at your option) any later version.
+	*
+	* This program is distributed in the hope that it will be useful,
+	* but WITHOUT ANY WARRANTY; without even the implied warranty of
+	* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+	* GNU General Public License for more details.
+	*
+	* You should have received a copy of the GNU General Public License
+	* along with this program; if not, write to the Free Software
+	* Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+	*
+	* See the gpl.txt file located in the top-level-directory of
+	* the archive of this library for complete text of license.
 */
 
 using System.Net;
@@ -32,7 +32,7 @@ namespace Sharkbite.Irc
 	/// <param name="message">The unparsed message text.</param>
 	/// <seealso cref="Listener.OnReply"/>
 	public delegate void ReplyEventHandler( ReplyCode code, string message );
-	
+
 	/// <summary>
 	/// Error messages from the IRC server.
 	/// </summary>
@@ -40,7 +40,7 @@ namespace Sharkbite.Irc
 	/// <param name="message">The error message text.</param>
 	/// <seealso cref="Listener.OnError"/>
 	public delegate void ErrorMessageEventHandler( ReplyCode code, string message );
-	
+
 	/// <summary>
 	/// A Notice or Private message was sent to someone
 	/// whose status is away.
@@ -49,57 +49,57 @@ namespace Sharkbite.Irc
 	/// <param name="awayMessage">An away message, if any, set by the user. </param>
 	/// <seealso cref="Listener.OnAway"/>
 	public delegate void AwayEventHandler( string nick, string awayMessage );
-	
+
 	/// <summary>
-	/// An Invite message was successfully sent to another user. 
+	/// An Invite message was successfully sent to another user.
 	/// </summary>
 	/// <param name="nick">The nick of the user who was invited</param>
 	/// <param name="channel">The name of the channel the user was invited to join</param>
 	/// <seealso cref="Listener.OnInviteSent"/>
 	public delegate void InviteSentEventHandler( string nick, string channel );
-	
+
 	/// <summary>
 	/// Called when a nick change fails.
 	/// </summary>
 	/// <remarks>
 	/// <para>This method can be called under 2 conditions:
-	/// It can arise when the user is already 
+	/// It can arise when the user is already
 	/// registered with the IRC server and is trying change his nick.
-	/// Or when the user is trying to register for the first time with 
+	/// Or when the user is trying to register for the first time with
 	/// the IRC server and it fails.</para>
 	/// <para>Note that if the later arises then you will have to manually
-	/// complete the regsitration process.</para> 
+	/// complete the regsitration process.</para>
 	/// </remarks>
 	/// <param name="badNick">The nick which caused the problem</param>
 	/// <param name="reason">A message explaining the error</param>
 	/// <seealso cref="Listener.OnNickError"/>
 	public delegate void NickErrorEventHandler( string badNick, string reason ) ;
-	
+
 	/// <summary>
 	/// Called when a server sends a keep-alive Ping.
 	/// </summary>
 	/// <param name="message">The message that the IRC server wants echoed back to it.</param>
 	/// <seealso cref="Listener.OnPing"/>
 	public delegate void PingEventHandler( string message );
-	
+
 	/// <summary>
 	/// Connection with IRC server is open and registered.
 	/// </summary>
 	/// <seealso cref="Listener.OnRegistered"/>
 	public delegate void RegisteredEventHandler();
-	
+
 	/// <summary>
-	/// This connection is about to be closed 
+	/// This connection is about to be closed
 	/// </summary>
 	/// <seealso cref="Listener.OnDisconnecting"/>
 	public delegate void DisconnectingEventHandler();
-	
+
 	/// <summary>
-	/// This connection has been closed 
+	/// This connection has been closed
 	/// </summary>
 	/// <seealso cref="Listener.OnDisconnected"/>
 	public delegate void DisconnectedEventHandler();
-		
+
 	/// <summary>
 	/// A Notice type message was sent to a channel.
 	/// </summary>
@@ -108,7 +108,7 @@ namespace Sharkbite.Irc
 	/// <param name="notice">A message.</param>
 	/// <seealso cref="Listener.OnPublicNotice"/>
 	public delegate void PublicNoticeEventHandler( UserInfo user, string channel, string notice );
-	
+
 	/// <summary>
 	/// A private Notice type message was sent to the user.
 	/// </summary>
@@ -124,7 +124,7 @@ namespace Sharkbite.Irc
 	/// <param name="channel">The channel name.</param>
 	/// <seealso cref="Listener.OnJoin"/>
 	public delegate void JoinEventHandler( UserInfo user, string channel );
-	
+
 	/// <summary>
 	/// An action message was sent to a channel.
 	/// </summary>
@@ -150,7 +150,7 @@ namespace Sharkbite.Irc
 	/// <param name="message">A message.</param>
 	/// <seealso cref="Listener.OnPublic"/>
 	public delegate void PublicMessageEventHandler( UserInfo user, string channel, string message );
-	
+
 	/// <summary>
 	/// A user changed his nickname.
 	/// </summary>
@@ -158,7 +158,7 @@ namespace Sharkbite.Irc
 	/// <param name="newNick">The new nickname.</param>
 	/// <seealso cref="Listener.OnNick"/>
 	public delegate void NickEventHandler( UserInfo user, string newNick );
-	
+
 	/// <summary>
 	/// A private message was sent to the user.
 	/// </summary>
@@ -166,7 +166,7 @@ namespace Sharkbite.Irc
 	/// <param name="message">The message.</param>
 	/// <seealso cref="Listener.OnPrivate"/>
 	public delegate void PrivateMessageEventHandler( UserInfo user, string message );
-	
+
 	/// <summary>
 	/// A channel's topic has changed.
 	/// </summary>
@@ -175,7 +175,7 @@ namespace Sharkbite.Irc
 	/// <param name="newTopic">The new topic.</param>
 	/// <seealso cref="Listener.OnTopicChanged"/>
 	public delegate void TopicEventHandler( UserInfo user, string channel, string newTopic);
-	
+
 	/// <summary>
 	/// The response to a <see cref="Sender.RequestTopic"/> command.
 	/// </summary>
@@ -185,7 +185,7 @@ namespace Sharkbite.Irc
 	public delegate void TopicRequestEventHandler( string channel, string topic);
 
 	/// <summary>
-	/// Someone has left a channel. 
+	/// Someone has left a channel.
 	/// </summary>
 	/// <param name="user">The user who left.</param>
 	/// <param name="channel">The channel he left.</param>
@@ -200,7 +200,7 @@ namespace Sharkbite.Irc
 	/// <param name="reason">A goodbye message.</param>
 	/// <seealso cref="Listener.OnQuit"/>
 	public delegate void QuitEventHandler( UserInfo user, string reason);
-	
+
 	/// <summary>
 	/// The user has been invited to a channel.
 	/// </summary>
@@ -208,9 +208,9 @@ namespace Sharkbite.Irc
 	/// <param name="channel">The target channel.</param>
 	/// <seealso cref="Listener.OnInvite"/>
 	public delegate void InviteEventHandler( UserInfo user, string channel );
-	
+
 	/// <summary>
-	/// Someone has been kicked from a channel. 
+	/// Someone has been kicked from a channel.
 	/// </summary>
 	/// <param name="user">Who did the kicking.</param>
 	/// <param name="channel">The channel that the person was kicked from.</param>
@@ -218,7 +218,7 @@ namespace Sharkbite.Irc
 	/// <param name="reason">Why the person was kicked.</param>
 	/// <seealso cref="Listener.OnKick"/>
 	public delegate void KickEventHandler( UserInfo user, string channel, string kickee, string reason );
-	
+
 	/// <summary>
 	/// The response to a <see cref="Sender.Names"/> request.
 	/// </summary>
@@ -231,7 +231,7 @@ namespace Sharkbite.Irc
 	/// <param name="last">True if this is the last names reply.</param>
 	/// <seealso cref="Listener.OnNames"/>
 	public delegate void NamesEventHandler( string channel, string[] nicks, bool last );
-	
+
 	/// <summary>
 	/// The response to a <see cref="Sender.List"/> request.
 	/// </summary>
@@ -261,7 +261,7 @@ namespace Sharkbite.Irc
 	/// <param name="realName">The user's real name</param>
 	/// <param name="last">True if this is the last response</param>
 	/// <seealso cref="Listener.OnWho"/>
-	public delegate void WhoEventHandler( UserInfo user, string channel, string ircServer, string mask, 
+	public delegate void WhoEventHandler( UserInfo user, string channel, string ircServer, string mask,
 	int hopCount, string realName, bool last );
 
 	/// <summary>
@@ -356,18 +356,18 @@ namespace Sharkbite.Irc
 	/// Someone has sent a Ctcp Ping request.
 	/// </summary>
 	/// <param name="who">Who sent the request.</param>
-	/// <param name="timestamp">The timestamp which should be sent 
+	/// <param name="timestamp">The timestamp which should be sent
 	/// back."</param>
 	/// <see cref="CtcpListener.OnCtcpPingRequest"/>
 	public delegate void CtcpPingRequestEventHandler( UserInfo who, string timestamp );
-	
+
 	/// <summary>
 	/// Someone has requested a DCC chat session.
 	/// </summary>
 	/// <param name="dccUserInfo">The collection of information about the remote user.</param>
 	/// <see cref="DccListener.OnDccChatRequest"/>
 	public delegate void DccChatRequestEventHandler( DccUserInfo dccUserInfo );
-	
+
 	/// <summary>
 	/// A DCC chat session has been opened with a remote user.
 	/// </summary>
@@ -409,44 +409,44 @@ namespace Sharkbite.Irc
 	public delegate void DccSendRequestEventHandler( DccUserInfo dccUserInfo, string fileName, int size, bool turbo );
 
 	/// <summary>
-	/// There has been no activity in this session for the timeout period. The 
-	/// session is automatically closed and this event is raised. 
+	/// There has been no activity in this session for the timeout period. The
+	/// session is automatically closed and this event is raised.
 	/// </summary>
-	/// <param name="session">The session in which the timeout occurred.</param> 
+	/// <param name="session">The session in which the timeout occurred.</param>
 	/// <see cref="DccFileSession.OnFileTransferTimeout"/>
-	public delegate void FileTransferTimeoutEventHandler( DccFileSession session ); 		
-	
+	public delegate void FileTransferTimeoutEventHandler( DccFileSession session );
+
 	/// <summary>
 	/// The file transfer connection has been successfully opened and the data
 	/// transfer has begun.
 	/// </summary>
-	/// <param name="session">The session in which the transfer has started.</param> 
+	/// <param name="session">The session in which the transfer has started.</param>
 	/// <see cref="DccFileSession.OnFileTransferStarted"/>
-	public delegate void FileTransferStartedEventHandler( DccFileSession session ); 
+	public delegate void FileTransferStartedEventHandler( DccFileSession session );
 
 	/// <summary>
 	/// Something happened to stop the transfer before it was completed. Normally
 	/// this will be due to one of the sides canceling the transfer.
 	/// </summary>
-	/// <param name="session">The session in which the transfer was interrupted.</param> 
+	/// <param name="session">The session in which the transfer was interrupted.</param>
 	/// <see cref="DccFileSession.OnFileTransferInterrupted"/>
-	public delegate void FileTransferInterruptedEventHandler( DccFileSession session ); 
+	public delegate void FileTransferInterruptedEventHandler( DccFileSession session );
 
 	/// <summary>
 	/// A file was succefully transfered.
 	/// </summary>
-	/// <param name="session">The session in which the transfer was successfully completed.</param> 
+	/// <param name="session">The session in which the transfer was successfully completed.</param>
 	/// <see cref="DccFileSession.OnFileTransferCompleted"/>
-	public delegate void FileTransferCompletedEventHandler( DccFileSession session ); 
+	public delegate void FileTransferCompletedEventHandler( DccFileSession session );
 
 	/// <summary>
 	/// Called for each successful data block transfer. This allows the developer
 	/// to show a transfer progress display of some kind.
 	/// </summary>
-	/// <param name="session">The session in which data was transfered.</param> 
+	/// <param name="session">The session in which data was transfered.</param>
 	/// <param name="bytesSent">The number of bytes sent in this block. The DccFileSession
 	/// contains the cumulative number of bytes sent/received and the total number
-	/// the will be processed.</param> 
+	/// the will be processed.</param>
 	/// <see cref="DccFileSession.OnFileTransferProgress"/>
 	public delegate void FileTransferProgressEventHandler( DccFileSession session , int bytesSent );
 
@@ -479,7 +479,7 @@ namespace Sharkbite.Irc
 	/// <summary>
 	/// The response to a <see cref="Sender.Version"/> request.
 	/// </summary>
-	/// <param name="versionInfo">The information string in the form 
+	/// <param name="versionInfo">The information string in the form
 	/// IRC: [version].[debuglevel] [server] :[comments]</param>
 	/// <seealso cref="Listener.OnVersion"/>
 	public delegate void VersionEventHandler( string versionInfo );
